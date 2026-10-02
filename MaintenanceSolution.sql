@@ -1,4 +1,16 @@
 ﻿/*
+Thema: Installation der SQL Server Maintenance Solution.
+Inhalt: Erstellt Verwaltungsobjekte und optional SQL-Agent-Auftraege fuer
+Sicherungen, Integritaetspruefungen sowie Index- und Statistikwartung.
+Erklaerung: Die Konfiguration am Skriptanfang steuert, welche Objekte und
+Auftraege in der ausgewaehlten Instanz eingerichtet werden.
+Praxistipps: Originaldokumentation und Lizenz beachten, Parameter vor dem
+Start pruefen und Wartungsauftraege erst nach Tests produktiv aktivieren.
+Hinweis: Dieses Drittanbieter-Skript ist unveraendert uebernommen; seine
+Originalhinweise und Lizenzbedingungen bleiben massgeblich.
+*/
+
+/*
 
 SQL Server Maintenance Solution - SQL Server 2008, SQL Server 2008 R2, SQL Server 2012, SQL Server 2014, SQL Server 2016, SQL Server 2017, SQL Server 2019, SQL Server 2022, and SQL Server 2025
 
@@ -9512,4 +9524,5 @@ BEGIN
   DEALLOCATE JobCursor
 END
 GO
+
 

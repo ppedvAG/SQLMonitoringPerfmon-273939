@@ -1,3 +1,15 @@
+/*
+Thema: Datenbankoptionen fuer Northwind.
+Inhalt: Statistiken, Datums-Korrelation, verzoegerte Dauerhaftigkeit, MAXDOP,
+Query-Optimizer-Hotfixes und Zeilenversionierung.
+Erklaerung: Die Optionen beeinflussen Planung, Parallelitaet, Commit-Verhalten
+und die Isolation lesender Transaktionen.
+Praxistipps: Auswirkungen in einer Testdatenbank messen und insbesondere
+verzoegerte Dauerhaftigkeit fachlich freigeben lassen.
+Hinweis: Das Skript aendert die Datenbankkonfiguration. Datenbankname,
+Berechtigungen und SQL-Server-Version vorher pruefen.
+*/
+
 use [master];
 GO
 
@@ -11,7 +23,7 @@ ALTER DATABASE [Northwind]
 
 ALTER DATABASE [Northwind] 
 	SET DATE_CORRELATION_OPTIMIZATION ON WITH NO_WAIT
---Gibt es Abhängigkeiten zwischen Datumsfeldern..?
+--Gibt es Abhï¿½ngigkeiten zwischen Datumsfeldern..?
 --Etwa immer 14 nach Termin1 , dann Termin2
 --SQL Server kann die Korrelation erkennen und entsprechen 
 --mit geeigneten Statistiken die Daten effizienter holen
@@ -24,16 +36,16 @@ ALTER DATABASE [Northwind]
 GO
 --Client bekommt Commit, obwohl TX noch nicht in LOG
 --festgeschrieben
---verzögert: evtl Datenverlust, aber für den Client schneller
---verzögert: Latenzzeit des Datenträger verringert sich
---da Batchweise zurückgeschrieben wird
---weniger Datenträgerkonflikte bei gleichzeitigen TX
+--verzï¿½gert: evtl Datenverlust, aber fï¿½r den Client schneller
+--verzï¿½gert: Latenzzeit des Datentrï¿½ger verringert sich
+--da Batchweise zurï¿½ckgeschrieben wird
+--weniger Datentrï¿½gerkonflikte bei gleichzeitigen TX
 -->Arbeitsauslastungen weisen eine hohe Konfliktrate auf.
--->Bei Schreibvorgängen in das Transaktionsprotokoll treten Engpässe auf.
+-->Bei Schreibvorgï¿½ngen in das Transaktionsprotokoll treten Engpï¿½sse auf.
 -->Datenverluste sind in gewissem Umfang vertretbar.
  --Wegschreiben ins Log: EXECUTE sys.sp_flush_log  
 
- --Ght allerdings nicht überall:
+ --Ght allerdings nicht ï¿½berall:
  --
 
 ALTER DATABASE 
@@ -51,7 +63,7 @@ GO
 ALTER DATABASE [Northwind] 
 	SET READ_COMMITTED_SNAPSHOT ON WITH NO_WAIT
 
---Ein Ändern eines Datensatzes hindert nicht mehr den Zugriff der anderen
+--Ein ï¿½ndern eines Datensatzes hindert nicht mehr den Zugriff der anderen
 --aber: es werden Versionen in die tempdb kopiert
 --evtl massive Last auf tempdb
 
@@ -59,3 +71,4 @@ ALTER DATABASE [Northwind]
 ALTER DATABASE SCOPED CONFIGURATION 
 CLEAR PROCEDURE_CACHE ;
 -- vs dbcc freeproccache leert den gesamten Planspeicher des SQL Server
+

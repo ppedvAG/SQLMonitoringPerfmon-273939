@@ -1,4 +1,14 @@
-﻿Wofür Statistiken?
+﻿/*
+Thema: Statistiken und Schaetzungen des SQL-Server-Abfrageoptimierers.
+Inhalt: Statistikarten, Histogramme, Aktualisierung, Sampling und Schwellenwerte.
+Erklaerung: Statistiken beschreiben Datenverteilungen und helfen dem Optimierer,
+die Zahl der Ergebniszeilen und passende Plaene abzuschaetzen.
+Praxistipps: Veraltete oder ungenaue Statistiken anhand der Workload pruefen;
+FULLSCAN kann bei grossen Tabellen erheblichen Aufwand verursachen.
+Hinweis: Einige Beispiele setzen dbo.Kunden sowie geeignete Berechtigungen voraus.
+*/
+
+Wofür Statistiken?
 SQL Server muss bevor die Abfragen ausgeführt werden eine Information besitzten,
 wieviele DAtensätze in etwa zurückkommen werden. Das ist wichtig für die Wahl 
 von IX SEEK oder doch Table_SCAN.
@@ -382,5 +392,6 @@ Histogramm: Zeigt konkrete Häufigkeiten einzelner Werte oder Wertbereiche.
 EQ_ROWS: Exakte Treffer für Schlüsselwerte.
 
 RANGE_ROWS: Werte zwischen bekannten Schlüsseln → SQL Server interpoliert.
+
 
 

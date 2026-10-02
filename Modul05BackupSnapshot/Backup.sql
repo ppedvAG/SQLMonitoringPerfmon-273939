@@ -1,4 +1,16 @@
 /*
+Thema: SQL-Server-Sicherungen und Wiederherstellungsplanung.
+Inhalt: Wiederherstellungsmodelle, Voll-, Differenzial- und Protokollsicherungen
+sowie typische Wiederherstellungsszenarien.
+Erklaerung: Sicherungsart und -folge bestimmen, auf welchen Zeitpunkt eine
+Datenbank zurueckgebracht werden kann.
+Praxistipps: RPO/RTO festlegen, Sicherungen getrennt speichern und Restore-
+Tests regelmaessig durchfuehren.
+Hinweis: Beispielpfade und Datenbanknamen pruefen; die Skriptbeispiele sind
+keine vollstaendige Backup-Strategie.
+*/
+
+/*
 
 Wiederherstellungsmodel oder RecoveyModel
 
@@ -185,3 +197,4 @@ RESTORE DATABASE NORTHWIND from database_Snapshot = 'SN_Northwind_1152'
 
 
 		
+

@@ -1,7 +1,17 @@
---Design Phänomene
+/*
+Thema: Weitergeleitete Datensaetze in Heap-Tabellen.
+Inhalt: Diagnose mit DBCC SHOWCONTIG und sys.dm_db_index_physical_stats.
+Erklaerung: Wachsen Zeilen in einem Heap und passen nicht mehr auf ihre Seite,
+kann SQL Server sie verschieben und einen Forwarded Record hinterlassen.
+Praxistipps: forwarded_record_count regelmaessig im Kontext der Workload pruefen
+und eine Heap-Umwandlung nur nach Abwaegung der Folgen erwÃ¤gen.
+Hinweis: DBCC SHOWCONTIG ist veraltet; die DMV benoetigt geeignete Rechte.
+*/
+
+--Design Phï¿½nomene
 
 --forward Record Counts
---kommt durch Hinzufügen von Spalten zu bestehenden Tabellen
+--kommt durch Hinzufï¿½gen von Spalten zu bestehenden Tabellen
 --14000 Seiten mehr als Tabelle hat???
 
 --Alter  !!
@@ -23,9 +33,10 @@ select * from sys.dm_db_index_physical_stats
 -- im Falle von Clustered Indizes wird es immer NULL sein
 
 --sond forwardrecordcounts vorhanden--> CL IX erstellen
---und falls der nicht erwünscht ist wieder löschen
+--und falls der nicht erwï¿½nscht ist wieder lï¿½schen
 :-)
 
 --TRIGGER: INS UP DEL   DML
 
 --DDL: CR ALTER DROP
+

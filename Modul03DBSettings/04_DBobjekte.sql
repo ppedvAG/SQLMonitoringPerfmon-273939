@@ -1,4 +1,14 @@
 /*
+Thema: Datenzugriff ueber Tabellen, Sichten, Prozeduren und Funktionen.
+Inhalt: Vergleich von Datenbankobjekten und Beispiele mit Northwind.
+Erklaerung: Ausfuehrungsplaene und Wiederverwendung haengen von Abfrageform,
+Parametrisierung und Objektart ab; kein Objekt ist pauschal am schnellsten.
+Praxistipps: Plaene und Laufzeit messen und Funktionen nicht unnoetig auf
+jede Zeile einer grossen Ergebnismenge anwenden.
+Hinweis: Das Skript setzt Northwind sowie passende Berechtigungen voraus.
+*/
+
+/*
 Daten abfragen
 
 a) select * from tabelle join ..join..join
@@ -16,13 +26,13 @@ d       ab            c
 
 A b c d
 
---langsam nach schnell----------->es könnte auch das passieren
+--langsam nach schnell----------->es kï¿½nnte auch das passieren
 c                d       ab            
 
 
 
 --------------------------
-Sicht = gemerkte Abfrage, die sich wie ein Tabelle verhält
+Sicht = gemerkte Abfrage, die sich wie ein Tabelle verhï¿½lt
 aber keine Daten besitzt
 kann aber INS Update und delete
 
@@ -118,4 +128,5 @@ select *
 from 
 		Customers 
 where	Customerid ='ALFKI'
+
 

@@ -1,9 +1,19 @@
 /*
+Thema: SQL Server in virtualisierten Umgebungen.
+Inhalt: CPU-, NUMA-, Arbeitsspeicher- und Datentraegerzuordnung.
+Erklaerung: Die Beispiele verdeutlichen, dass eine VM dieselben Ressourcen-
+engpaesse wie ein physischer Server haben kann und Host und Gast zusammenwirken.
+Praxistipps: Genug RAM fuer das Gastbetriebssystem reservieren und Datentraeger-
+Durchsatz sowie NUMA-Zuordnung pruefen.
+Hinweis: Die Beispielwerte sind keine allgemeingueltige Dimensionierung.
+*/
+
+/*
 Fragen , die man sich stellen sollte:
 
 Hat die VM auch die Ressourcen
-, die sie auch ohne Virtualisierung hätte?
-/*
+, die sie auch ohne Virtualisierung hï¿½tte?
+ 
 
 
 Ziel Nr 1 (neben genug RAM)		 
@@ -27,13 +37,13 @@ CPU
 ! Bilde in der VM die reale Umgebung ab..
 
 NUMA: 
-NUMA Architektur...zu jedem RAM Sockel (Knoten) gehört ein bestimmter Prozessor
+NUMA Architektur...zu jedem RAM Sockel (Knoten) gehï¿½rt ein bestimmter Prozessor
 	Vorteil der ZUgriff ist sehr schnell
-	Zugriff auf RAM eines anderen Sockel höhere Latenzzeit
+	Zugriff auf RAM eines anderen Sockel hï¿½here Latenzzeit
       
 Was, wenn die Architekur in VM was anderes sieht
-, als es in der realität ist..
-Ausnahme: Lizenzgründe: SQL Express 1 Sockel 4 Kerne
+, als es in der realitï¿½t ist..
+Ausnahme: Lizenzgrï¿½nde: SQL Express 1 Sockel 4 Kerne
 					    Standard 4 Sockel 24 Kerne
 
 
@@ -43,7 +53,7 @@ Beachte immer das Gast OS! Mind 4 GB gedanklich reservieren..
 Aktuelle Ausstattung
 16 GB RAM 1 Socket 1 CPU mit 2 Kernen und 4 log Prozessoren
 
-Für das vorreservieren: 4 GB
+Fï¿½r das vorreservieren: 4 GB
 
 16-4GB= 12GB zu verteilen
 

@@ -1,3 +1,15 @@
+/*
+Thema: Auswertung von SQL-Server-Wartezeiten.
+Inhalt: Zusammenfassung nichtleerer Wait-Statistiken nach Wartezeitanteil,
+durchschnittlicher Wartezeit sowie Ressourcen- und Signalanteil.
+Erklaerung: Wait-Statistiken zeigen, worauf Aufgaben seit dem letzten Start
+oder Zuruecksetzen der Zaehler gewartet haben.
+Praxistipps: Werte ueber ein definiertes Zeitintervall vergleichen und nach
+Neustart sowie fuer bekannte Hintergrund-Waits interpretieren.
+Hinweis: Ein hoher Wait-Wert allein beweist keinen Engpass; NOLOCK vermeidet
+keine allgemeinen Konsistenz- oder Diagnoseprobleme.
+*/
+
 WITH [Waits] 
 AS (SELECT wait_type, wait_time_ms/ 1000.0 AS [WaitS],
           (wait_time_ms - signal_wait_time_ms) / 1000.0 AS [ResourceS],
@@ -57,3 +69,4 @@ ON W2.RowNum <= W1.RowNum
 GROUP BY W1.RowNum, W1.wait_type
 HAVING SUM (W2.Percentage) - MAX (W1.Percentage) < 99 -- percentage threshold
 OPTION (RECOMPILE);
+

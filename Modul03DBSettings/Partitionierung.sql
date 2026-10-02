@@ -1,11 +1,23 @@
 /*
-1.  Problem: größer werdende Tabellen
+Thema: Horizontale Datenaufteilung mit partitionierten Sichten und Tabellen.
+Inhalt: CHECK-Einschraenkungen, Partitionsfunktionen und -schemata, SPLIT/MERGE,
+Komprimierung und Partition-Switching.
+Erklaerung: Partitionierung verwaltet grosse Tabellen in Bereichen; sie ersetzt
+nicht automatisch passende Indizes oder gute Abfragen.
+Praxistipps: Grenzwerte, Dateigruppen und Archivschema vorab planen und die
+Partition-Elimination im Ausfuehrungsplan kontrollieren.
+Hinweis: Das Skript enthaelt umgebungsspezifische Beispiele. Nur in einer
+geeigneten Testdatenbank ausfuehren und Pfade anpassen.
+*/
 
-Idee: Salamitaktiv.. statt einer großen Tabelle viele kleine
+/*
+1.  Problem: grï¿½ï¿½er werdende Tabellen
+
+Idee: Salamitaktiv.. statt einer groï¿½en Tabelle viele kleine
 
 
 
-Große Tabellen kleiner machen Idee
+Groï¿½e Tabellen kleiner machen Idee
 
 1) part. Sicht
 2) Partitionierung
@@ -15,15 +27,15 @@ zu 1)
 statt einer Tabelle viele kleinere Tabellen
 Aber: --Die Anwendung braucht aber "UMSATZ"
 
-Lösung:
+Lï¿½sung:
 Sicht die alle Tabellen mit UNION ALL zusammenfasst
-damit wir einen Vorteil haben: CHECK Einschränkungen zB jahr=2020
+damit wir einen Vorteil haben: CHECK Einschrï¿½nkungen zB jahr=2020
 --das hilft dem Plan um genau eine der Tabellen der Sicht herauszupicken
 
 negativ: hilft nur wenn die entspr Spalte auch im where abgefragt
-         umständllich
+         umstï¿½ndllich
 
-		 das geht nicht: identity, PK FK muss angepasst-- Referentielle Integrität
+		 das geht nicht: identity, PK FK muss angepasst-- Referentielle Integritï¿½t
 
 zu 2)
 	es bleibt die Tabelle
@@ -61,7 +73,7 @@ zu 2)
 		 Grenze entfernen
 			 alter partition function fName merge range (grenzwert)
 
-			 einz. Part. können komprimiert
+			 einz. Part. kï¿½nnen komprimiert
 
 		 Archivieren
 
@@ -74,7 +86,7 @@ zu 2)
 			Daten werden nicht verschoben, sondern part wird in Tabe umgewandelt
 
 
-	best Tabelle, die auf einer Dgruppen oder Schema liegen, können nur mit einem Löschen 
+	best Tabelle, die auf einer Dgruppen oder Schema liegen, kï¿½nnen nur mit einem Lï¿½schen 
 	auf andere Dgruppen oder Schemas verschoben werden
 	---Ausnahme best Index
 
@@ -120,7 +132,7 @@ select * from u2017
 
 
 --Messen:
---im Plan: SCAN = A bis Z Suche..komplettes durchwühlen--- SEEK (TOP!!) herauspicken
+--im Plan: SCAN = A bis Z Suche..komplettes durchwï¿½hlen--- SEEK (TOP!!) herauspicken
 select * from umsatz where jahr = 2019
 
 --besser durch: Check Constraints
@@ -144,9 +156,9 @@ select * from umsatz where id = 2019
 
 insert into umsatz (id,jahr, spx) values(1,2017, 100)
 
---fordert einen PK für alle Tabellen.. Der DS muss auf die Sicht eindeutig sein
+--fordert einen PK fï¿½r alle Tabellen.. Der DS muss auf die Sicht eindeutig sein
 --Identity muss raus
---jetzt muss aber der ID Wert manuell gefüllt werden
+--jetzt muss aber der ID Wert manuell gefï¿½llt werden
 
 -- Jetzt ist die Anw draussen!!
 
@@ -186,7 +198,7 @@ create table t2 (id int) ON HOT
 --verschiebe die Tabelle Orders auf HOT....??
 
 --geht per Entwurfsansicht in Objektexplorer...  F4 Eigenschaften
---Vorsicht: Löscht Tabelle.. oder ein best IX  CL IX....
+--Vorsicht: Lï¿½scht Tabelle.. oder ein best IX  CL IX....
 
 
 ---physikalische Part:
@@ -219,10 +231,10 @@ partition fzahl to (bis100,bis200,rest)
 create table ptab (id int identity, nummer int, spx char(4100))
 		ON schZahl(nummer)
 
---Datensätze liegen immer dort wo sie lt Funktion und Schema sein müssen..
+--Datensï¿½tze liegen immer dort wo sie lt Funktion und Schema sein mï¿½ssen..
 --insofern werden sie auch verschoben
 
---Schelife für Insert
+--Schelife fï¿½r Insert
 set statistics io, time off
 
 declare @i as int = 0
@@ -257,7 +269,7 @@ alter partition scheme schZahl next used bis5000
 select $partition.fZahl(nummer), min(nummer), max(nummer), count(*)
 from ptab group by $partition.fzahl(nummer)
 
---bisher noch ekein physik. Änderung
+--bisher noch ekein physik. ï¿½nderung
 
 alter partition function fzahl() split range(5000)
 
@@ -271,7 +283,7 @@ select * from ptab where nummer = 6117
 -----100!----------------200------------5000--------------
 
 --evtl mal Grenze rausnehmen
---f()!, scheme nö, Tab nö
+--f()!, scheme nï¿½, Tab nï¿½
 
 
 /****** Object:  PartitionScheme [schZahl]    Script Date: 09.12.2020 14:17:10 ******/
@@ -303,9 +315,9 @@ WITH(DATA_COMPRESSION = PAGE )
 
 
 --Archivieren
---Datensätze müssen aus tab raus und in andere Tab rein
+--Datensï¿½tze mï¿½ssen aus tab raus und in andere Tab rein
 
---Verschieben von Datensätze
+--Verschieben von Datensï¿½tze
 
 create table archiv (id int not null,nummer int, spx char(4100))
 	ON bis200 --muss auch die DGruppe, auf der die part liegt..
@@ -320,7 +332,7 @@ from ptab group by $partition.fzahl(nummer)
 
 
 --100MB/Sek
---bis200 100000000 MB --> dauer: 10 Sek  nö... ca 1 ms
+--bis200 100000000 MB --> dauer: 10 Sek  nï¿½... ca 1 ms
 
 
 CREATE PARTITION SCHEME [schZahl] AS
@@ -343,7 +355,7 @@ CREATE PARTITION FUNCTION [fZahl](date)
 AS 
 RANGE LEFT FOR VALUES (Getdate()-30, getdate()+30)
 GO
-´--nicht sinnvoll
+ï¿½--nicht sinnvoll
 
 
 CREATE PARTITION SCHEME [schZahl] AS
@@ -351,4 +363,5 @@ PARTITION [fZahl] TO ([PRIMARY], [PRIMARY], [PRIMARY], [PRIMARY])
 
 --primary ja..geht. ..und macht Sinn, da wir es wie viele kleine Tabellen behandeln
 --ab SQL 2016 Sp1 auch in Std oder sogar Express
+
 

@@ -1,3 +1,13 @@
+/*
+Thema: Beispielansicht fuer Kundenumsatzdaten.
+Inhalt: Verknuepft Kunden, Bestellungen, Bestelldetails, Produkte und Mitarbeiter.
+Erklaerung: Die Sicht stellt Felder aus mehreren Northwind-Tabellen fuer
+Abfragen und Demonstrationen gemeinsam bereit.
+Praxistipps: Spaltenqualifizierungen beibehalten und benoetigte Spalten gezielt
+abfragen, statt bei grossen Datenmengen SELECT * zu verwenden.
+Hinweis: Voraussetzung sind das Northwind-Schema und passende CREATE VIEW-Rechte.
+*/
+
 CREATE VIEW [dbo].[KundenUmsatz]
 AS
 SELECT        dbo.Customers.CustomerID, dbo.Customers.CompanyName, dbo.Customers.ContactName, dbo.Customers.ContactTitle, dbo.Customers.City, dbo.Customers.Country, dbo.Orders.OrderDate, dbo.Orders.Freight, 
@@ -9,3 +19,4 @@ FROM            dbo.Customers INNER JOIN
                          dbo.Products ON dbo.[Order Details].ProductID = dbo.Products.ProductID INNER JOIN
                          dbo.Employees ON dbo.Orders.EmployeeID = dbo.Employees.EmployeeID
 GO
+

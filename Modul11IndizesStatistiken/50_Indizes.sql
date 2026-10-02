@@ -1,4 +1,15 @@
 /*
+Thema: SQL-Server-Indexarten, Nutzung und Wartung.
+Inhalt: Clustered-, Nonclustered-, gefilterte und abdeckende Indexe sowie
+Partitionierung, Indexvorschlaege und Wartungsbeispiele.
+Erklaerung: Indexe koennen Lesezugriffe beschleunigen, verursachen aber
+Speicherbedarf und Mehraufwand bei Datenaenderungen.
+Praxistipps: Plaene und Nutzungsdaten ueber einen aussagekraeftigen Zeitraum
+bewerten; Kandidaten erst nach Workload- und Schreibkostenanalyse aendern.
+Hinweis: Die Beispiele sind Lehrmaterial und keine universellen Indexregeln.
+*/
+
+/*
 
 INDIZES
 
@@ -7,7 +18,7 @@ CLUST IX
 nur 1x pro Tabelle
 gut bei Bereichsabfragen, weil sortiert
 gut bei eindeutigen Werten 
-per SSMS wird immer beim PK ein CL IX gesetzt.. in vielen Fälle dumm
+per SSMS wird immer beim PK ein CL IX gesetzt.. in vielen Fï¿½lle dumm
 
 
 NON CLUST IX
@@ -19,11 +30,11 @@ gut bei geringen Resultset (id)
 eindeutiger IX
 
 zusammengesetzter IX
-max 16 Spalten/32 und max 900bytes Schlüssellänge
+max 16 Spalten/32 und max 900bytes Schlï¿½ssellï¿½nge
 meist nicht mehr als 4 notwendig
 
 gefilterter IX
-nicht alle Datensätze
+nicht alle Datensï¿½tze
 Vorsicht: evtl ist ungefiltert genauso gut (Anzahl der Ebenen entscheidend)
 
 IX mit eingeschlossenen Spalten
@@ -34,7 +45,7 @@ partitionierter IX
 entspricht gefilteren IX auf phsysikalischer Ebene
 im Gegensatz zum gefilterten , wird der part IX jedoch alle Spaltenwerte in best Bereiche einordnen
 
-Der Gefilterte dagegen betrachten nur die Datensätze, die sich durch den Filter ergeben
+Der Gefilterte dagegen betrachten nur die Datensï¿½tze, die sich durch den Filter ergeben
 (zb USA)
 
 ----DE------FR-------IT-----UK-------------------------
@@ -47,13 +58,13 @@ abdeckender IX
 = idealer IX..reinen SEEK, kein Lookup , kein Scan
 
 
-realer hypothetischer IX-- diese erstellt der Database Tuning Advisor ... unsichtbar im Hintergrun und löscht sie nach getaner Arbeit wieder
+realer hypothetischer IX-- diese erstellt der Database Tuning Advisor ... unsichtbar im Hintergrun und lï¿½scht sie nach getaner Arbeit wieder
 das Tool: Datenbankoptimierungsratgeber erstellt diese, um effiziente IX zu finden
-diese sind "unsichtbar" und werden für Bneutzerabfragen nicht eingesetzt.
+diese sind "unsichtbar" und werden fï¿½r Bneutzerabfragen nicht eingesetzt.
 Also real und dennoch hyptothetisch...
 Den Datenbankoptimierungsratgeber unbedingt seine Analyse zu Ende bringen lassen.
-Sonst belieben die unsichtbaren IX Vorschläge in der DB hängen. ..
-Stört, dann, wenn man keine neue mehr anlegen kann, weil zu viele IX existieren (Limit 1000)
+Sonst belieben die unsichtbaren IX Vorschlï¿½ge in der DB hï¿½ngen. ..
+Stï¿½rt, dann, wenn man keine neue mehr anlegen kann, weil zu viele IX existieren (Limit 1000)
 
 
 ind Sicht
@@ -68,34 +79,34 @@ Columnstore (Gruppiert und nicht gruppiert)
 stark komprimiertes spaltenweises Ablegen der Daten
 CPU optimiert
 kommt, wie "normale" Seiten 1:1 in RAM
-Aber: neue Datensätze kommen in einen zeileorientierte Heap (deltastore)
-erst ab einer Million werden die Daten des Heap in die kompr Segmente übergeführt
-Ausnahme: bei Massenimporten (ab ca 100000) werden die DS direkt in den Columntore übergeführt
+Aber: neue Datensï¿½tze kommen in einen zeileorientierte Heap (deltastore)
+erst ab einer Million werden die Daten des Heap in die kompr Segmente ï¿½bergefï¿½hrt
+Ausnahme: bei Massenimporten (ab ca 100000) werden die DS direkt in den Columntore ï¿½bergefï¿½hrt
 
 
 
 
 
 
---Vorsicht: Index Scan ist nicht schlecht-- weniger Aufwand als Table Scan, aber SEEK wäre besser
+--Vorsicht: Index Scan ist nicht schlecht-- weniger Aufwand als Table Scan, aber SEEK wï¿½re besser
 
---Optimierer entscheidet sich für einen Scan , wenn dieser weniger Kosten als ein Seek verursacht
---der Optimierer entscheidet sich für einen IX Scan, wenn dieser günstiger als ein Table Scan ist.
+--Optimierer entscheidet sich fï¿½r einen Scan , wenn dieser weniger Kosten als ein Seek verursacht
+--der Optimierer entscheidet sich fï¿½r einen IX Scan, wenn dieser gï¿½nstiger als ein Table Scan ist.
 
--- user_scan, index_scan  ..nie gebrauchte Indizes evtl löschen
+-- user_scan, index_scan  ..nie gebrauchte Indizes evtl lï¿½schen
 -- user_scan, index_scan  .. besser als table scan
 
---Kann man unnütze IX finden: DMVs...!
+--Kann man unnï¿½tze IX finden: DMVs...!
 sys.dm_db_index_usage_Stats
 
-toDO mit Indizes: Defragmentieren , überflüssige entfernen und fehlende erstellen
+toDO mit Indizes: Defragmentieren , ï¿½berflï¿½ssige entfernen und fehlende erstellen
 --Wartungsplan
 
 -- Brent Ozar SP_blitzIndex-- First Responder Kit 0 Euro
 
 --Wartung--> Wartungsplan: IX Rebuild IX Reorg Statistiken
 
---Stat:  akt nach 20% Änderung plus 500  zu spät, weil ab  ca 1% -- jeden Tag aktualisieren
+--Stat:  akt nach 20% ï¿½nderung plus 500  zu spï¿½t, weil ab  ca 1% -- jeden Tag aktualisieren
 
 --IX Reorg ab 10% 
 --Rebuild ab 30%
@@ -106,14 +117,14 @@ exec sp_updatestats
 TIPP:
 
 IX mit eingeschlossenen Spalten
-Die Schlüsselspalten blden sich aus den Spalten der where Bedingung
+Die Schlï¿½sselspalten blden sich aus den Spalten der where Bedingung
 Die eingeschlossenen Spalten entnimmt man aus dem SELECT 
 
 
-CLUSTERED INDEX.. als Primäschlüssel oft pure Verschwendung
-CL spielt seine Vorteile bei Berecihsabfragen aus und wird nie Lookup Vorgänge erzeugen... 
-allerdings gibt es diesen nur 1 mal pro Tabellen... Also gut vorher überlegen
---über die Entwurfsansicht der Tabelle--> rechte Maus--> Indizes und Schlüssel-- als Clustered erstellen (Ja / Nein) läßt sich das ändern.
+CLUSTERED INDEX.. als Primï¿½schlï¿½ssel oft pure Verschwendung
+CL spielt seine Vorteile bei Berecihsabfragen aus und wird nie Lookup Vorgï¿½nge erzeugen... 
+allerdings gibt es diesen nur 1 mal pro Tabellen... Also gut vorher ï¿½berlegen
+--ï¿½ber die Entwurfsansicht der Tabelle--> rechte Maus--> Indizes und Schlï¿½ssel-- als Clustered erstellen (Ja / Nein) lï¿½ï¿½t sich das ï¿½ndern.
 
 
 
@@ -136,7 +147,7 @@ select * from sys.dm_db_index_physical_stats(db_id(), object_id('ku2'),NULL,NULL
 --forward record counts muss NULL sein
 --wenn man einen HEAP kann das passieren (neue Spalten)
 --ID sind im "Anhang gelandet" und verbrauchen deutlich mehr Platz als notwendig
---CL IX = Lösung
+--CL IX = Lï¿½sung
 
 
 alter table ku1 add id int identity
@@ -162,7 +173,7 @@ select id, freight from ku1 where id < 10500 --ab 11500 ca Table scan
 select id, freight from ku1 where id < 900500 --ab 10500 ca Table scan
 
 --Achtung: nun haben wir mehrer Indizes , die gleiches leisten
--- das bedeutet nicht nur überflüssig, sondern extra Kosten bei INS UP DEL
+-- das bedeutet nicht nur ï¿½berflï¿½ssig, sondern extra Kosten bei INS UP DEL
 -- I U D ist erst dann "zu Ende" , wenn alle betroffenen IX aktualisiert wurden
 
 
@@ -177,7 +188,7 @@ where employeeid = 2
 group by country, city
 --NIX_EID_inkl_cy_ci_up_qu
 
---where  = Schlüsselspalte
+--where  = Schlï¿½sselspalte
 --select = eingeschlossene Spalten
 
 
@@ -235,7 +246,7 @@ group by CompanyName
 
 --Warum schneidet die KU3 bei jeder Abfrage , gleich oder besser ab
 
---Größe der KU und Größe der KU3
+--Grï¿½ï¿½e der KU und Grï¿½ï¿½e der KU3
 -- 600MB vs 4 MB
 --Stimmt das oder nicht?
 
@@ -251,7 +262,7 @@ where
 group by CompanyName
 
 
---INDIZES müssen gewartet werden
+--INDIZES mï¿½ssen gewartet werden
 
 
 
@@ -263,13 +274,14 @@ group by CompanyName
 --unter 10 % nix
 
 --Fehlende IX finden
---überflüssige IX entfernen
+--ï¿½berflï¿½ssige IX entfernen
 
 select * from sys.dm_db_index_usage_stats
 
 --1 = CL IX
 --0 = Heap
 --> 1   NCL IX
+
 
 
 

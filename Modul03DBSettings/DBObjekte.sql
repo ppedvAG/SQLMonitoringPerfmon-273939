@@ -1,15 +1,26 @@
+/*
+Thema: Abfrageleistung mit Prozeduren, Sichten und Funktionen.
+Inhalt: Beispielhafte Objektdefinitionen und Vergleiche mit Ad-hoc-Abfragen.
+Erklaerung: Objektwahl und Planwiederverwendung koennen die Laufzeit
+beeinflussen; die Wirkung haengt von Schema und Parametern ab.
+Praxistipps: Mit repraesentativen Parameterwerten messen und Sichten auf
+benoetigte Spalten und Tabellen begrenzen.
+Hinweis: Das Skript enthaelt Lernbeispiele, die Objekte anlegen oder aendern.
+Vor erneutem Ausfuehren den Datenbankzustand pruefen.
+*/
+
 						  /*
-wir können mit Hilfe veschiedener Objekte diesseleben Ergennisse bekommen
+wir kï¿½nnen mit Hilfe veschiedener Objekte diesseleben Ergennisse bekommen
 Aber was ist schneller: F() , Porz , Adhoc oder Sicht
 
 --Was kann man dort falsch machen?
 
---Gerüchte sagen: Prozedur ist schnell.. aber warum?.. Angeblich kompiliert
---Funktionen sind schnell, nö... langsam.. nun was denn?
---Sichten sind langsam, da sie erst einn "Umweg" nehmen müssen
+--Gerï¿½chte sagen: Prozedur ist schnell.. aber warum?.. Angeblich kompiliert
+--Funktionen sind schnell, nï¿½... langsam.. nun was denn?
+--Sichten sind langsam, da sie erst einn "Umweg" nehmen mï¿½ssen
 --adhoc .. nicht so besonders schnell
 
---Antwort: es kommt darauf an: Die gerüchte sind schon richtig, aber nur 
+--Antwort: es kommt darauf an: Die gerï¿½chte sind schon richtig, aber nur 
 --wenn:
 		--die Rahmenbedingungen passen
 
@@ -64,7 +75,7 @@ go
 
 
 
---beide schlecht..Lösung siehe unten
+--beide schlecht..Lï¿½sung siehe unten
 
 
 
@@ -73,7 +84,7 @@ go
 create table slf (id int identity, stadt int, land int);
 GO
 
---Eine Sicht, die alle Spalten der tabelle slf zurückgibt
+--Eine Sicht, die alle Spalten der tabelle slf zurï¿½ckgibt
 --Sichtname: vslf
 
 create view vslf
@@ -116,7 +127,7 @@ select * from vslf
 --Idee schemabinding: zwingt zum genauen arbeiten
 -- * verboten
 --Pflicht: Angabe des Schema
---abhängige Objekte kann man nicht merh verändern
+--abhï¿½ngige Objekte kann man nicht merh verï¿½ndern
 
 drop table slf
 drop view vslf
@@ -147,10 +158,10 @@ select * from slf
 select * from vslf
  --kein Fluss: Sicht merkt sich Ausgabeschema
 
- --nicht mehr möglich
+ --nicht mehr mï¿½glich
  /*
  Sichten . .. besser mit schemabinding
-	müssen korrekt verarbeitet werden
+	mï¿½ssen korrekt verarbeitet werden
 
 		nicht zweckentfremden: wenn Sicht 65 Joins hat , 
 			aber Abfrage braucht nur 2 Tabellen
@@ -166,11 +177,11 @@ select * from vslf
  select * from vslf
 
 
- ---schemabinding schärfere Kontrolle
+ ---schemabinding schï¿½rfere Kontrolle
 
 
  --Sichte schneller oder langsamer
- --grundsätzlich egal: identisch wie adhoc.. gleich schnell, aber was wenn
+ --grundsï¿½tzlich egal: identisch wie adhoc.. gleich schnell, aber was wenn
 
 
  select top 3 * from kundeumsatz
@@ -190,6 +201,7 @@ select * from vslf
 
 
 select * from orders Where orderid = 300000
+
 
 
 

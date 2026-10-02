@@ -1,3 +1,13 @@
+/*
+Thema: SQL-Server-Sperren und Tabellenhinweise.
+Inhalt: Beispiele mit verschiedenen Lock-Hints und expliziten Transaktionen.
+Erklaerung: Sperrhinweise beeinflussen das Sperrverhalten und koennen Blockierungen
+oder Nebenwirkungen ausloesen; sie ersetzen keine geeignete Isolation.
+Praxistipps: Nur in einer Testdatenbank ausfuehren und jede Beispieltransaktion
+mit ROLLBACK beenden.
+Hinweis: Die Beispiele aktualisieren Preise und greifen auf die Tabelle Products zu.
+*/
+
 ----
 -- LOCKS
 -- UPDLOCK, TABLOCKX
@@ -57,3 +67,4 @@ select * from Products
 WITH (readuncommitted)  
 WHERE ProductID between 1 and 5;  
 rollback
+

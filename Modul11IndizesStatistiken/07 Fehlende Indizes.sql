@@ -1,13 +1,23 @@
+/*
+Thema: Fehlende Indexe anhand von Ausfuehrungsplaenen und DMVs untersuchen.
+Inhalt: Hinweise des Optimierers, XML-Planabfragen und Diagnose fehlender Indexe.
+Erklaerung: Fehlende-Index-Empfehlungen sind Schaetzungen fuer einzelne Plaene
+und keine vollstaendige Indexstrategie.
+Praxistipps: Vorschlaege gegen bestehende Indexe, Schreibkosten und reale
+Workloads abgleichen, bevor ein Index erstellt wird.
+Hinweis: Beispiele enthalten Platzhalter und setzen passende Testobjekte voraus.
+*/
+
 
 --Fehlende indizes feststellen
--- Ausgabe in tatsächlichen Ausführungsplan
---oder in select * from sys.dm_exec_cached_plans (später)
+-- Ausgabe in tatsï¿½chlichen Ausfï¿½hrungsplan
+--oder in select * from sys.dm_exec_cached_plans (spï¿½ter)
 
 
 //*
 Es ist nicht dazu gedacht, eine Indizierungskonfiguration zu optimieren.
 Es kann keine statistischen Informationen zu mehr als 500 fehlenden Indexgruppen sammeln.
-Es gibt keine Reihenfolge für in einem Index zu verwendende Spalten an.
+Es gibt keine Reihenfolge fï¿½r in einem Index zu verwendende Spalten an.
 
 SELECT column_a, column_b
 FROM table_1
@@ -17,11 +27,11 @@ ORDER BY column_b, column_a
  
 
 
-Für Abfragen, die nur Ungleichheitsprädikate enthalten, gibt es weniger genaue Kosteninformationen zurück.
-Es meldet bei manchen Abfragen nur eingeschlossene Spalten, sodass Indexschlüsselspalten manuell ausgewählt werden müssen.
-Es gibt nur Rohdateninformationen zu Spalten zurück, bei denen möglicherweise Indizes fehlen.
-Es schlägt keine gefilterten Indizes vor.
-Es kann unterschiedliche Kosten für dieselbe fehlende Indexgruppe zurückgeben, die mehrere Male in XML-Showplans angezeigt wird.
+Fï¿½r Abfragen, die nur Ungleichheitsprï¿½dikate enthalten, gibt es weniger genaue Kosteninformationen zurï¿½ck.
+Es meldet bei manchen Abfragen nur eingeschlossene Spalten, sodass Indexschlï¿½sselspalten manuell ausgewï¿½hlt werden mï¿½ssen.
+Es gibt nur Rohdateninformationen zu Spalten zurï¿½ck, bei denen mï¿½glicherweise Indizes fehlen.
+Es schlï¿½gt keine gefilterten Indizes vor.
+Es kann unterschiedliche Kosten fï¿½r dieselbe fehlende Indexgruppe zurï¿½ckgeben, die mehrere Male in XML-Showplans angezeigt wird.
 
 *//
 
@@ -39,7 +49,7 @@ go
 
 
 
---Grundsätzlich Pläne in denen fehlende Indizes genannt werden
+--Grundsï¿½tzlich Plï¿½ne in denen fehlende Indizes genannt werden
 select p.query_plan
    from sys.dm_exec_cached_plans
         cross apply sys.dm_exec_query_plan(plan_handle) as p
@@ -139,7 +149,7 @@ go
 ---select * from sys.dm_db_missing_index_...
 
 //*
-Felhlende INdizes werden zu Gruppen zusammengefasst..wird für weitere Abfragen gebraucht (Verknüpfungen)
+Felhlende INdizes werden zu Gruppen zusammengefasst..wird fï¿½r weitere Abfragen gebraucht (Verknï¿½pfungen)
 select * from sys.dm_db_missing_index_groups
 
 
@@ -149,8 +159,8 @@ select * from sys.dm_db_missing_index_group_stats
 
 Details zu fehlenden Indizes
 statement= Name der Tabelle
-equality_columns gut für = Abfragen
-inequality_columns  gut für Bereichsabfragen
+equality_columns gut fï¿½r = Abfragen
+inequality_columns  gut fï¿½r Bereichsabfragen
 select * from sys.dm_db_missing_index_details
 
 
@@ -180,3 +190,4 @@ select db_name(d.database_id) as db_name
        inner join sys.dm_db_missing_index_details as d
                on g.index_handle = d.index_handle
  where d.database_id > 4  -- Nur Benutzerdatenbanken
+

@@ -1,4 +1,15 @@
 /*
+Thema: SQL-Server-Systemdatenbanken und Sicherungen.
+Inhalt: Aufgaben von master, model, msdb, tempdb und distribution sowie
+Beispiele fuer Voll-, Differenzial- und Protokollsicherungen.
+Erklaerung: Die Systemdatenbanken verwalten Instanzmetadaten, Vorlagen,
+Agent-Auftraege und temporaere Arbeitsdaten.
+Praxistipps: Systemdatenbanken regelmaessig sichern und Sicherungen testweise
+wiederherstellen; Protokollsicherungen erfordern ein passendes Wiederherstellungsmodell.
+Hinweis: Sicherungspfade und Datenbanknamen vor der Ausfuehrung anpassen.
+*/
+
+/*
 
 master
 "herz"
@@ -8,12 +19,12 @@ Backup: Backup..!
 
 
 model
---Vorlage für neue DBs
+--Vorlage fï¿½r neue DBs
 
 create database testdb
---Änderungen an der model haben Auswirkung auf alle danach erzeugten DBS
+--ï¿½nderungen an der model haben Auswirkung auf alle danach erzeugten DBS
 --Einstellungen, Tabellen
---Backup der modelDB: nur notwendig , wenn Änderungen
+--Backup der modelDB: nur notwendig , wenn ï¿½nderungen
 --alternativ per Script
 
 USE [master]
@@ -23,12 +34,12 @@ GO
 
 
 msdb
-DB für den Agent
-Zeitpläne, Jobs, Proxykonten, Warnungen , DB Email
+DB fï¿½r den Agent
+Zeitplï¿½ne, Jobs, Proxykonten, Warnungen , DB Email
 SSIS Pakete (SQL Server Integration Services)  Datenimport Export
 Wartungsplan = SSSI Paet
 
-Backup: regelmäßig
+Backup: regelmï¿½ï¿½ig
 
 
 
@@ -55,9 +66,9 @@ mssqlsystemressources-versteckte DB .. black box
 Sicherung der SystemDbs
 
 Wartungsplan
-Vollständige Sicherung --> SytemDbs --> einmal täglich -- > 
+Vollstï¿½ndige Sicherung --> SytemDbs --> einmal tï¿½glich -- > 
 --> Unterordner anlegen lassen -->
---> Checksumme+Integritätsprüfung + Kompression + bei Fehler fortsetzen
+--> Checksumme+Integritï¿½tsprï¿½fung + Kompression + bei Fehler fortsetzen
 --> Logfile + Email, wenn man will
 
 
@@ -86,4 +97,3 @@ SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 
 -- V  TTT D TTT D TTT
-

@@ -1,4 +1,16 @@
---Überwachung
+/*
+Thema: Vorgehen zur Diagnose von SQL-Server-Leistungsproblemen.
+Inhalt: Einordnung von CPU, Wartezeiten, DMVs, Abfrageplaenen, Query Store,
+Datensammler und Perfmon.
+Erklaerung: Die systematische Analyse grenzt zuerst Betriebssystem- und
+Instanzengpaesse ein und untersucht danach passende Abfragen und Ressourcen.
+Praxistipps: Zeitraeume und Zaehlerstaende dokumentieren, Messungen vergleichen
+und bei Bedarf Query Store oder Extended Events fuer Historie einsetzen.
+Hinweis: DMV-Werte sind oft seit dem letzten Start kumuliert und koennen
+zurueckgesetzt werden; Einzelwerte sind nicht als Beweis fuer einen Engpass zu werten.
+*/
+
+--ï¿½berwachung
 
 /*
 aktuelles Problem
@@ -9,15 +21,15 @@ mslaugh.exe teakids.exe
 
 --es ist der SQL Server!!
 
-Taskmanager für den SQL Server:  Aktivitätsmonitor
+Taskmanager fï¿½r den SQL Server:  Aktivitï¿½tsmonitor
 
 
 select * from sys.dm_os_wait_stats
 
 Wenn signal_time > 25% der gesamten DAuer ausmacht ==> CPU Problem
-Blöd: die Zeiten sind seit NEustart kummilierend!
+Blï¿½d: die Zeiten sind seit NEustart kummilierend!
 
-Seit wann läuft der Server?
+Seit wann lï¿½uft der Server?
 tempdb Erstellungszeit
 
 besser: alle wait_time addieren
@@ -27,17 +39,17 @@ besser: alle wait_time addieren
 --Monitoring
 
 --live Problem
----- Reihenfolge für Monitoring
+---- Reihenfolge fï¿½r Monitoring
 --1.  Taskmanager: Ausschluss andere Dinge (Anitvirentool, Viren, Trojaner..)
 ---    zB mslaugh.exe   teakids.exe mit Admin acount
 --> nix gefunden...-->SQL Server 
 
 --2 SQL Server genauer anschauen
--->   Aktivitätsmonitor  
-----> Wartezustände.. worauf warten aktuell. innerhalb der letzten Sekunden bzw in der letzten Zeit
--------> damit haben wir schon mal die Richtung , in der wir weitersehen müssen.
+-->   Aktivitï¿½tsmonitor  
+----> Wartezustï¿½nde.. worauf warten aktuell. innerhalb der letzten Sekunden bzw in der letzten Zeit
+-------> damit haben wir schon mal die Richtung , in der wir weitersehen mï¿½ssen.
 
---für genauere Infos: auch der Aktivitätsmonitor wertet Systemsichetn aus, wie zB:
+--fï¿½r genauere Infos: auch der Aktivitï¿½tsmonitor wertet Systemsichetn aus, wie zB:
 
 select * from sys.dm_os_wait_stats
 
@@ -49,7 +61,7 @@ select * from sys.dm_os_wait_stats
 
 
 select * from sys.dm_os_wait_stats
---eigtl müssten wir folgendes tun
+--eigtl mï¿½ssten wir folgendes tun
 -- wenn man alle Wartezeiten addiert = gemsamte  Laufzeit des Servers
 --Wartezeit einer Ressource im Vergleich zur gesamt Laufzteit
 
@@ -64,19 +76,19 @@ LCK_M_S	   242	8745766	1855310	33  um 10:20
 
 --------------DMVs Data Management Views-------------
 -- siehe im Projekt Z_SQL_Server_2019_Diagnostic Information Queries.sql
---eine ganze Sammlung von nützlichen DMvs
+--eine ganze Sammlung von nï¿½tzlichen DMvs
 
 select * from sysprocesses --alle Prozesse der User haben ein SPID > 50
 
----------------Für eine historische Betrachtung--------------------
---ist der SQL neugestartet , sind die DMVs zurückgestzt worden. Somit wertvolle Infos weg...
+---------------Fï¿½r eine historische Betrachtung--------------------
+--ist der SQL neugestartet , sind die DMVs zurï¿½ckgestzt worden. Somit wertvolle Infos weg...
 --also evtl Aufzeichnen
 
 
 
 ---per TSQL ----------------------------------------
 -- set statistics io, time on 
---sowie Abfragepläne
+--sowie Abfrageplï¿½ne
 
 --Diese bieten wertvolle Hinweise, erfordern aber aktives Monitoring
 set statistics io,time on
@@ -101,19 +113,19 @@ select * from custorders where id = 100
 
 /*
 
---Aktivitätsmonitor------------------------------
+--Aktivitï¿½tsmonitor------------------------------
 Was geht .. auf Server--> Taskmanager +  Ressourcemonitor
 
 ==> wo geht die Leistung hin?  --> ? Antivirentool, Trojanerquark, andere Tools, Software
 
---Was wenn keine Engpässe erkennbar oder deutlich auf SQL Server hinweist?
---> Taskmanager für SQL Server: Aktivitätsmonitor
+--Was wenn keine Engpï¿½sse erkennbar oder deutlich auf SQL Server hinweist?
+--> Taskmanager fï¿½r SQL Server: Aktivitï¿½tsmonitor
 
 --Dort kann man die aktiven Prozesse der Benutzer mitverfolgen
 
 select * from sysprocesses  where spid <= 50.. alles andere = User
 
-wir finden hier also : aktive Prozessen, die Wartezeiten und Warteressourcen, die IO Aktivtäten,  Die teruersten aktiven bzw vergangenen Abfragen 
+wir finden hier also : aktive Prozessen, die Wartezeiten und Warteressourcen, die IO Aktivtï¿½ten,  Die teruersten aktiven bzw vergangenen Abfragen 
 
 --------------------------------------------------------------
 
@@ -133,13 +145,13 @@ oder Tools zum Aufzeichnen verwenden wie Datensammler oder QueryStore
 --kann man alles per rechter Maustaste konfigurieren
 
 --1: Anlegen der DatawarehouseDB
---2: Konfigurieren der DAtensammlersätze
+--2: Konfigurieren der DAtensammlersï¿½tze
 
 --TOOL: QueryStore (Abfragespeicher)----------------
---sammlet pro DB Messdaten und Abfragen. Daten stehen auch nach Neustart noch zur  Verfügung
+--sammlet pro DB Messdaten und Abfragen. Daten stehen auch nach Neustart noch zur  Verfï¿½gung
 --grafische Auswertung in Form von Berichten
 .--muss pr DB aktiviert werden
---> Sehr cool...daher: Query Store merkt sich , fast unscheinbar - die Messwerte und Pläne, und bereitet die grafisch auf... auf Dauer
+--> Sehr cool...daher: Query Store merkt sich , fast unscheinbar - die Messwerte und Plï¿½ne, und bereitet die grafisch auf... auf Dauer
 --> muss alerdings aktiviert werden
 
 --QueryStore Abfragespeicher: sammlet Abfragen der DB plus rel viele Messungen
@@ -174,7 +186,7 @@ select * from sys.dm_os_wait_stats
 --Query--Postkasten(Fifo)--> Worker(Analyse)-- Ressourcen!!
 
 --                    supended  |runnable    |RUNNING
----(LCK_M_S)|........................|........................| 70ms bis das Ding läuft
+---(LCK_M_S)|........................|........................| 70ms bis das Ding lï¿½uft
 --          0                 50ms CPU 20ms
 
 --wait_time_ms: Gesamte Dauer: 70ms
@@ -194,3 +206,4 @@ select * from sys.dm_os_performance_counters
 
 
 */
+

@@ -1,31 +1,44 @@
+/*
+Thema: Wichtige Windows- und SQL-Server-Perfmon-Leistungsindikatoren.
+Inhalt: CPU, Datentraeger, Arbeitsspeicher, Buffer Cache, Plan Cache, Kompilierungen,
+Batchanforderungen, Sperren und Latches.
+Erklaerung: Leistungsindikatoren liefern Trends und helfen, moegliche Engpaesse
+zwischen Betriebssystem und SQL Server einzugrenzen.
+Praxistipps: Werte ueber Zeit korrelieren und hostspezifische Baselines bilden,
+statt starre Einzelgrenzwerte isoliert anzuwenden.
+Hinweis: Viele Kennzahlen sind workloadspezifisch; insbesondere Cache- und
+Seitenlebensdauerwerte muessen im Kontext interpretiert werden.
+*/
+
+/*
 
 andreasr@ppedv.de
 
 Prozessor: Prozessorzeit
-Diese sollte natürlich nicht auf Dauer allzu hoch sein. Messunen
-über 50% bis 60%, sollten abgeklärt werden (Auslagerungen, Kompilierungen etc)
+Diese sollte natï¿½rlich nicht auf Dauer allzu hoch sein. Messunen
+ï¿½ber 50% bis 60%, sollten abgeklï¿½rt werden (Auslagerungen, Kompilierungen etc)
 
 PhysicalDisk: AverageDiskQueueLength
-Dieser Wert sollte auf Dauer nicht über 2 sein. Punktuell über einen kürzeren Zeitraum kann ein Wert
+Dieser Wert sollte auf Dauer nicht ï¿½ber 2 sein. Punktuell ï¿½ber einen kï¿½rzeren Zeitraum kann ein Wert
 von bspw 200 auch normal sein...
-Der Wert gibt nämlich an, ob der physik. Datenträger Daten schnell genug wegschreiben kann.
+Der Wert gibt nï¿½mlich an, ob der physik. Datentrï¿½ger Daten schnell genug wegschreiben kann.
 
 Speicher: Seiten/sec
-Seiten, die entweder vom Speicher auf den Datenträger geschrieben werden oder davon gelesen und in den Sepicher geschrieben werden. Der Wert sollte auf Dauer kleiner als 20 sein.
+Seiten, die entweder vom Speicher auf den Datentrï¿½ger geschrieben werden oder davon gelesen und in den Sepicher geschrieben werden. Der Wert sollte auf Dauer kleiner als 20 sein.
 
 BufferManager: BufferCacheHitRatio
 Die %-Quote gibt an, wieviel der angefragten Daten (Seiten) aus dem Speichercache 
-geholt werden können. Der Wert sollte größer 90% sein. Dadurch, 
-dass der SQL Server jede Menge ´Read Ahead Vorgänge erzeugt,
-ist der Wert nicht allzuaussagekräftig. Bereits nach Start des SQL Dienstes 
-weist er einen Wert von kanpp unter 100% aus… obwohl noch keine Daten abgefragt wurden??!!
+geholt werden kï¿½nnen. Der Wert sollte grï¿½ï¿½er 90% sein. Dadurch, 
+dass der SQL Server jede Menge ï¿½Read Ahead Vorgï¿½nge erzeugt,
+ist der Wert nicht allzuaussagekrï¿½ftig. Bereits nach Start des SQL Dienstes 
+weist er einen Wert von kanpp unter 100% ausï¿½ obwohl noch keine Daten abgefragt wurden??!!
 
 Plan Cache: Trefferquote
-Jede Frage benötigt einen Ausführungsplan. Im günstigsten Fall liegt dieser bereits vor. 
+Jede Frage benï¿½tigt einen Ausfï¿½hrungsplan. Im gï¿½nstigsten Fall liegt dieser bereits vor. 
 Falls nicht, muss ein neuer Plan erstellt und kompiliert werden. 
 Das kostet Prozessorzeit.
 Falls also die Prozessorleistung sehr hoch ist, sollten sie diesen Wert und 
-Transactions / sec untersuchen. Die Trefferquote sollte so hoch wie möglich sein.
+Transactions / sec untersuchen. Die Trefferquote sollte so hoch wie mï¿½glich sein.
 
 GenerelStatitics: 
 User Connections
@@ -35,40 +48,38 @@ Anzahl der Benutzerverbindungen
 
 SQL Memory Manger:
 Freier Speicher
-Zielspeicher ist übrgens bei MAX Memory aus den Serversettings
+Zielspeicher ist ï¿½brgens bei MAX Memory aus den Serversettings
 
 Puffer Manager: Page Life Expectancy  mind 300ssek lt MS
 Seiten werden in den Speicher geladen, um die Requests der Clients schnell
-bedienen zu können. Die gecachten Seiten können aufgrund von zu wenig Platz 
+bedienen zu kï¿½nnen. Die gecachten Seiten kï¿½nnen aufgrund von zu wenig Platz 
 zugunsten anderer Seiten aus dem Cache entfernt werden. 
 Der Wert sollte nicht unter 300 liegen. Sonst haben Sie zu wenig Hauptspeicher
-Ein Sägezhanmuster nach Neustart des SQL Servs ist durchaus normal.
+Ein Sï¿½gezhanmuster nach Neustart des SQL Servs ist durchaus normal.
 Neue Daten senken den Schnitt..
 
 
 SQL Statistics: Kompilierungen /sec
-Ausführungspläne bedürfen einer kompilierung und evtl auch einer Recompilierung. 
-Diese führt zu einer höheren CPU Last. Sollte dieser Wert sich erhöhen, können Sie evtl durch paramtriesierung ihrer Abfragen eine Verbesserung erreichen.
+Ausfï¿½hrungsplï¿½ne bedï¿½rfen einer kompilierung und evtl auch einer Recompilierung. 
+Diese fï¿½hrt zu einer hï¿½heren CPU Last. Sollte dieser Wert sich erhï¿½hen, kï¿½nnen Sie evtl durch paramtriesierung ihrer Abfragen eine Verbesserung erreichen.
 
 SQL Statistics: Recompilierungen /sec
-Dieser Wert steigt, sobald kompilierte Pläne durch verschiedene SET Einstellungen erneut kompiliert werden müssen.
+Dieser Wert steigt, sobald kompilierte Plï¿½ne durch verschiedene SET Einstellungen erneut kompiliert werden mï¿½ssen.
 
 SQL Statistics:
 Batchanforderungen pro Sekunde
 Was muss der SQL Server aktuell leisten ..bei wieviel Usern
 
 SQL Benutzerdefinierbar: User Counter 1 (bis 10)
-Ein Indikator der mir persönlich sehr gut gefällt. Übergibt man der sp_Usercounter1 eine ganze Zahl  so wird diese sofort im Systemmonitor dargestellt. SO ließe sich z.B. der Tagesumsatz im Verhältnis zur CPU oder Speicher darstellen. In Worten: Ab einem bestimmten  Umsatz proTag braucht man eine besser CPU. 
+Ein Indikator der mir persï¿½nlich sehr gut gefï¿½llt. ï¿½bergibt man der sp_Usercounter1 eine ganze Zahl  so wird diese sofort im Systemmonitor dargestellt. SO lieï¿½e sich z.B. der Tagesumsatz im Verhï¿½ltnis zur CPU oder Speicher darstellen. In Worten: Ab einem bestimmten  Umsatz proTag braucht man eine besser CPU. 
 
 SQL Locks: durschnittliche Wartezeit (ms)
 
 SQL Latches:
 Durchschnittliche Wartezeit (ms)
 Greift ein Thread auf eine Seite zu, dann muss ein anderer Prozess, 
-der auf die gleiche Seite zugreifen möchte, auf diesen Warten. 
-Man könnte sie auch Systemlocks nennen..:-)
+der auf die gleiche Seite zugreifen mï¿½chte, auf diesen Warten. 
+Man kï¿½nnte sie auch Systemlocks nennen..:-)
 
 SQL 
-
-
-
+*/

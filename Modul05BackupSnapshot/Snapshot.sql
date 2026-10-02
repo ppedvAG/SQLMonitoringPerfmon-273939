@@ -1,3 +1,14 @@
+/*
+Thema: SQL-Server-Datenbanksnapshots.
+Inhalt: Erstellen, Abfragen und Zuruecksetzen eines Snapshots.
+Erklaerung: Ein Snapshot stellt einen schreibgeschuetzten, platzsparenden
+Zustand einer Quelldatenbank zu einem Zeitpunkt bereit.
+Praxistipps: Snapshots sind kein Ersatz fuer Sicherungen; freie Kapazitaet,
+Lebensdauer und Schreiblast der Quelldatenbank beobachten.
+Hinweis: Vor dem Ausfuehren logische Dateinamen, Dateipfade und aktive
+Verbindungen pruefen. RESTORE aus Snapshot verwirft spaetere Aenderungen.
+*/
+
 USE [master]
 GO
 ALTER DATABASE northwind SET  Multi_USER WITH NO_WAIT
@@ -42,7 +53,7 @@ select * from customers
 --ja
 
 --Kann man einen SN backupen?
---Nö
+--Nï¿½
 
 --Kann man die OrgDB backupen?
 --Ja klar
@@ -53,14 +64,14 @@ select * from [SN_nwind_1220]..customers
 
 
 --kann man den SN restoren?
---nö
+--nï¿½
 
 --kann man die OrgDB restoren?
 --jein--kein normaler restore
---für den normal restore müssen alle SN gelöscht werden
---Restore von SN möglich
+--fï¿½r den normal restore mï¿½ssen alle SN gelï¿½scht werden
+--Restore von SN mï¿½glich
 
---alle user müssen von allen DBs (northwind und Snapshot) verscheucht werden
+--alle user mï¿½ssen von allen DBs (northwind und Snapshot) verscheucht werden
 use master;
 GO
 
@@ -87,3 +98,4 @@ select * from sysprocesses
 
 
 kill 81
+

@@ -1,13 +1,24 @@
 /*
+Thema: Parallelitaet und MAXDOP.
+Inhalt: Beispiele fuer parallele Abfragen, Laufzeitmessung und die Einstellung
+von MAXDOP auf Abfrage- und Datenbankebene.
+Erklaerung: MAXDOP begrenzt die Prozessoren, die eine einzelne Abfrage verwendet;
+mehr Parallelitaet ist nicht automatisch schneller.
+Praxistipps: IO- und Zeitmessungen vergleichen und mit reprÃ¤sentativen Abfragen
+testen, statt einen Wert ungeprueft zu uebernehmen.
+Hinweis: Vor Datenbankaenderungen Umgebung, Version und Workload pruefen.
+*/
+
+/*
 
 MAXDOP 
 
-Abfragen können eine oder mehr CPUs verwenden
+Abfragen kï¿½nnen eine oder mehr CPUs verwenden
 
 Wird eine Abfrage schneller fertig sein, wenn mehr CPUs sie verarbeiten?
 Normalerweise schon .. macht Sinn!
 
-SQL verwendet allerdings keine variable Anzah an Kernen. (Erst SQL 2022 ist dazu lernfähig)
+SQL verwendet allerdings keine variable Anzah an Kernen. (Erst SQL 2022 ist dazu lernfï¿½hig)
 SQL verwendet 1 oder alle Kerne bzw das was in MAXDOP angegeben ist.
 
 Seit SQL 2016: Standardwert statt 0 nun Anzagh der Kerne , aber max 8
@@ -46,7 +57,7 @@ SQL Server-Analyse- und Kompilierzeit:
 --MAXDOP ABfrage = 1 
 
 -- CPU-Zeit = 374 ms, verstrichene Zeit = 52 ms.
---nur ein Grund dafür.. mehr CPUs haben was getan.. 
+--nur ein Grund dafï¿½r.. mehr CPUs haben was getan.. 
 --scheint Sinn gemacht zu haben
 
 select * from sys.dm_os_wait_stats		   
@@ -56,8 +67,8 @@ where wait_type like 'CX%'
 select country, city, SUM(freight) from ku  --62000 Seiten
 group by country, city  option (maxdop 8)
 
---Fakt: Am Ende zählt der MAXDOP, der näher an der Abfrage dran ist
--- Server(4)-->DB(6)--Abfrage(8)-- es zählt 8
+--Fakt: Am Ende zï¿½hlt der MAXDOP, der nï¿½her an der Abfrage dran ist
+-- Server(4)-->DB(6)--Abfrage(8)-- es zï¿½hlt 8
 
 
 --Was sollte man einstellen: 
@@ -68,21 +79,21 @@ group by country, city  option (maxdop 8)
 
 --im Plan Doppelpfeil
 
---Dass SQL Server paralelisiert müssen 2 Bedingungen erfüllt sein
--- Bed 1: wenn der Kostenschwellwert überschritten wurde: default bei 5
+--Dass SQL Server paralelisiert mï¿½ssen 2 Bedingungen erfï¿½llt sein
+-- Bed 1: wenn der Kostenschwellwert ï¿½berschritten wurde: default bei 5
 --       dann werden rigoros alle CPUs verwendet
 
 -- Seit SQL 2019 (Setup) wird folgendes vorgeschlagen: alle Prozessoren ,
 ---aber nicht mehr als 8 
 
---Wären nicht weniger besser gewesen?
+--Wï¿½ren nicht weniger besser gewesen?
 
---Tatsächlich ist es eher pro Abfrage zu entscheiden, was besser ist.
+--Tatsï¿½chlich ist es eher pro Abfrage zu entscheiden, was besser ist.
 --Fakt: meist kommt man mit weniger CPUs gleich schnell weg und spart 
 --zeitgleich CPU Leistung
 --Taskmanager sollte eine Reduzierung der Prozesssorzeit zeigen
 
---Siet SQL 2016 läßt dich der MAXDOP auch pro DB einstellen
+--Siet SQL 2016 lï¿½ï¿½t dich der MAXDOP auch pro DB einstellen
 
 USE [master]
 GO

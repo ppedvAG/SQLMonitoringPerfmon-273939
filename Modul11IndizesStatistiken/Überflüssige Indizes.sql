@@ -1,9 +1,19 @@
---Überflüssige Indizes identifizieren
+/*
+Thema: Kandidaten fuer ungenutzte oder ueberfluessige Indexe ermitteln.
+Inhalt: Abfrage der Index-Nutzungszaehler fuer Benutzertabellen.
+Erklaerung: Indexe verursachen Pflegekosten, waehrend Nutzungszaehler nur
+Aktivitaet seit dem letzten Neustart oder Zuruecksetzen abbilden.
+Praxistipps: Beobachtungszeitraum, seltene Wartungsjobs und Geschaeftszyklen
+beruecksichtigen, bevor Indexe entfernt werden.
+Hinweis: Fehlende DMV-Zeilen bedeuten nicht automatisch, dass ein Index ungenutzt ist.
+*/
+
+--ï¿½berflï¿½ssige Indizes identifizieren
 
 --kosten Performance bei INSERT / DELETE
 
 --Systemsichten
--- select * from sys.dm_db_index_physical_Stats verknüpft mikt sys.indexes
+-- select * from sys.dm_db_index_physical_Stats verknï¿½pft mikt sys.indexes
 
 
 select object_name(i.object_id) as TableName
@@ -18,9 +28,10 @@ select object_name(i.object_id) as TableName
  where objectproperty(i.object_id, 'IsUserTable') = 1
 go
 
---Optimierer entscheidet sich für Index-scan , wenn die der günstiger als Table-scan ist
--- user_scan, index_scan  ..nie gebrauchte Indizes evtl löschen
+--Optimierer entscheidet sich fï¿½r Index-scan , wenn die der gï¿½nstiger als Table-scan ist
+-- user_scan, index_scan  ..nie gebrauchte Indizes evtl lï¿½schen
 -- user_scan, index_scan  .. besser als table scan
 
 
 -- Brent Ozar SP_blitzIndex
+

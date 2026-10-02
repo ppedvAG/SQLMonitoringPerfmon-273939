@@ -1,3 +1,13 @@
+/*
+Thema: Dateigruppen fuer aktive und archivierte Daten.
+Inhalt: Anlegen von Dateigruppen und Dateien sowie Zuordnen von Tabellen.
+Erklaerung: Dateigruppen organisieren Datenbankdateien und koennen die
+Platzierung und Wartung von Daten erleichtern.
+Praxistipps: Dateien auf vorhandene Datentraegerpfade legen und Kapazitaet,
+Backup und Wiederherstellung zusammen planen.
+Hinweis: Datenbankname und Windows-Pfade vor dem Ausfuehren anpassen.
+*/
+
 --Dateigruppen
 USE [master]
 GO
@@ -17,11 +27,11 @@ FILEGROWTH = 65536KB ) TO FILEGROUP [ARCHIV]
 GO
 
 
---verteile Daten auf versch Datenträger (HOT and Cold Data)
+--verteile Daten auf versch Datentrï¿½ger (HOT and Cold Data)
 
 create table tabelle1 (id int) ON Dateigruppe
 
 
---_Dateigruppe: eine weitere Datendatei (.ndf)   Dateigruppe synonym für Pfad und Dateiname:  c:\prgramme....\..ndf
+--_Dateigruppe: eine weitere Datendatei (.ndf)   Dateigruppe synonym fï¿½r Pfad und Dateiname:  c:\prgramme....\..ndf
 
 create table Archivtabelle (id int) on ARCHIV

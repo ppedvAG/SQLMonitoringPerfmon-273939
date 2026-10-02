@@ -1,20 +1,31 @@
+/*
+Thema: Groesse und Konfiguration von SQL-Server-Datenbanken.
+Inhalt: Datenbankwachstum, Statistiken, Wiederherstellungsmodell und weitere
+Konfigurationsoptionen.
+Erklaerung: Eine passende Anfangsgroesse und kontrolliertes Wachstum koennen
+unnnoetige Dateivergroesserungen und damit verbundene I/O reduzieren.
+Praxistipps: Wachstum anhand der erwarteten Auslastung dimensionieren, Auto-
+Shrink vermeiden und Aenderungen mit Wiederherstellungszielen abstimmen.
+Hinweis: Die enthaltenen Beispieloptionen konfigurieren die Datenbank Northwind.
+*/
+
 	   /*
 
-Eine Datenbank beginnt mit rel geringen Größen
+Eine Datenbank beginnt mit rel geringen Grï¿½ï¿½en
 und einer geringen Wachstumsrate!
 
 Wir wollen IO reduzieren oder sogar vermeiden.
-Also: Gib einer DB eine gute Startgröße um unnötiges IO zu vermeiden
+Also: Gib einer DB eine gute Startgrï¿½ï¿½e um unnï¿½tiges IO zu vermeiden
 
-Für Vergrößerungsraten empfiehlt sich zB 1024 MB. Selten , aber nicht aufwendig ist das Motto.
+Fï¿½r Vergrï¿½ï¿½erungsraten empfiehlt sich zB 1024 MB. Selten , aber nicht aufwendig ist das Motto.
 
 Kontrolle:
-Berichte der Datenbank: Datenträgerverwendung.
-Am besten wäre keine automatischen Vergrößerungen oder wenige.
-Schlecht wäre: viele in einer Sekunde.
+Berichte der Datenbank: Datentrï¿½gerverwendung.
+Am besten wï¿½re keine automatischen Vergrï¿½ï¿½erungen oder wenige.
+Schlecht wï¿½re: viele in einer Sekunde.
 
 
-DB können ausserdem einige nützliche Settings besitzten, 
+DB kï¿½nnen ausserdem einige nï¿½tzliche Settings besitzten, 
 die es lohnt zu kontrolieren: 
 
 Statistiken automatisch erstellen true
@@ -37,7 +48,7 @@ ALTER DATABASE [Northwind]
 
 ALTER DATABASE [Northwind] 
 	SET DATE_CORRELATION_OPTIMIZATION ON WITH NO_WAIT
---Gibt es Abhängigkeiten zwischen Datumsfeldern..?
+--Gibt es Abhï¿½ngigkeiten zwischen Datumsfeldern..?
 --Etwa immer 14 nach Termin1 , dann Termin2
 --SQL Server kann die Korrelation erkennen und entsprechen 
 --mit geeigneten Statistiken die Daten effizienter holen
@@ -50,16 +61,16 @@ ALTER DATABASE [Northwind]
 GO
 --Client bekommt Commit, obwohl TX noch nicht in LOG
 --festgeschrieben
---verzögert: evtl Datenverlust, aber für den Client schneller
---verzögert: Latenzzeit des Datenträger verringert sich
---da Batchweise zurückgeschrieben wird
---weniger Datenträgerkonflikte bei gleichzeitigen TX
+--verzï¿½gert: evtl Datenverlust, aber fï¿½r den Client schneller
+--verzï¿½gert: Latenzzeit des Datentrï¿½ger verringert sich
+--da Batchweise zurï¿½ckgeschrieben wird
+--weniger Datentrï¿½gerkonflikte bei gleichzeitigen TX
 -->Arbeitsauslastungen weisen eine hohe Konfliktrate auf.
--->Bei Schreibvorgängen in das Transaktionsprotokoll treten Engpässe auf.
+-->Bei Schreibvorgï¿½ngen in das Transaktionsprotokoll treten Engpï¿½sse auf.
 -->Datenverluste sind in gewissem Umfang vertretbar.
  --Wegschreiben ins Log: EXECUTE sys.sp_flush_log  
 
- --Ght allerdings nicht überall:
+ --Ght allerdings nicht ï¿½berall:
  --
 
 ALTER DATABASE 
@@ -77,7 +88,7 @@ GO
 ALTER DATABASE [Northwind] 
 	SET READ_COMMITTED_SNAPSHOT ON WITH NO_WAIT
 
---Ein Ändern eines Datensatzes hindert nicht mehr den Zugriff der anderen
+--Ein ï¿½ndern eines Datensatzes hindert nicht mehr den Zugriff der anderen
 --aber: es werden Versionen in die tempdb kopiert
 --evtl massive Last auf tempdb
 
@@ -85,3 +96,4 @@ ALTER DATABASE [Northwind]
 ALTER DATABASE SCOPED CONFIGURATION 
 CLEAR PROCEDURE_CACHE ;
 -- vs dbcc freeproccache leert den gesamten Planspeicher des SQL Server
+
