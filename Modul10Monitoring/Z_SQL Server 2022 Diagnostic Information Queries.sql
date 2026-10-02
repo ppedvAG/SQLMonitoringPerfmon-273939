@@ -2319,4 +2319,3 @@ ORDER BY bs.backup_finish_date DESC OPTION (RECOMPILE);
 -- Microsoft Azure Learn
 -- https://bit.ly/2O0Hacc
 
-

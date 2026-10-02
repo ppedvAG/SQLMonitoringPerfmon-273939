@@ -6678,7 +6678,6 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[IndexOptimize] AS'
 END
 GO
-
 ALTER PROCEDURE [dbo].[IndexOptimize]
 
 @Databases nvarchar(max) = NULL,
@@ -9524,5 +9523,4 @@ BEGIN
   DEALLOCATE JobCursor
 END
 GO
-
 
