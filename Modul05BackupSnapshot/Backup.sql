@@ -29,14 +29,14 @@ Wiederherstellungsmodel oder RecoveyModel
 
 
 
-Sicherungsarten  
+Sicherungsarten
 Vollständig V
 	-- sichert alle Dateien der DB (Pfade und Größe)
 	-- Zeitpunkt
 
 Differenz D
 	merkt isch alle Blöcke, die sich seit dem letzten V verändert haben
-	
+
 Tlog T
 	- Tlog merkt sich die Anweisung (I U D)
 
@@ -45,11 +45,11 @@ Tlog T
 	T
 	T
 	T
-		
+
 	T
 	T
 	T
-!		
+!
 !	T
 !	T
 !	T (14:30)
@@ -59,7 +59,7 @@ Restore des V ist der schnelleste Restore
 Das T kann solange brauchen wie das Sicherungsinterval des T ist
 Das D sichert und verkürzt des Restore (ungemein)
 
-Planen: 
+Planen:
 Zu erst das V.. So fot wie möglich
 
 Dann das T: wie lange darf die DB still stehen?
@@ -84,23 +84,23 @@ Welche Fälle gibt es eigtl , um einen Restore machen zu müssen:
 
 */
 --VOLLSICHERUNG
-BACKUP DATABASE [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak' 
-	WITH NOFORMAT, NOINIT,  NAME = N'Northwind-Vollständig Datenbank Sichern', 
+BACKUP DATABASE [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak'
+	WITH NOFORMAT, NOINIT,  NAME = N'Northwind-Vollständig Datenbank Sichern',
 	SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 --DIFFSICHERUNG
-BACKUP DATABASE [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak' 
+BACKUP DATABASE [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak'
 	WITH  DIFFERENTIAL , NOFORMAT, NOINIT,  NAME = N'Northwind-Differenziell',
 		SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 --LOGSICHERUNG
-BACKUP LOG [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak' 
-	WITH NOFORMAT, NOINIT,  NAME = N'Northwind-Tlog', 
+BACKUP LOG [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak'
+	WITH NOFORMAT, NOINIT,  NAME = N'Northwind-Tlog',
 		SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 
 /*
-Wir sichern : V TTT D TTT 
+Wir sichern : V TTT D TTT
 
 --RESTORE
 
@@ -110,7 +110,7 @@ Wir sichern : V TTT D TTT
 
 	1.b nur die Datendatei ist ok, Log ist tot
 	  Logdatei entfernen , dann anfügen
-	
+
 	1.c alle Dateien hinüber
 	--Tipp::
 	--kopiere das Backup immer dorthin , wo der Server es auch erwartet
@@ -124,8 +124,8 @@ Wir sichern : V TTT D TTT
 	--> restoren mit Update / insert / Delete weiterarbeiten
 
 	3.b er weiss nicht, welche DS betroffen
-		-- Restore der DB 
-	3.b ist auch Fall 2 
+		-- Restore der DB
+	3.b ist auch Fall 2
 	--> DB restoren mit geringstmöglichen DAtenverlust
 
 
@@ -139,7 +139,7 @@ Error : 10:34
 
 --Theoretisch 10:30 mit best Sicherungen Datenverlust = 3-4 min
 
---Faul: Warten auf 10:40 T 
+--Faul: Warten auf 10:40 T
 -- damit restore von 10:33 --> Datenverlust = 6-7 min
 
 --besser:
@@ -148,7 +148,7 @@ Error : 10:34
 
 -- noch besser:
 -- manuell Sicherung von 10:35  Restore von 10:33 mit der Zeitachse
--- aber wir wefen die User runter  
+-- aber wir wefen die User runter
 
 --Protokollfragmentsicherung regelt.
 -- Beim  Restore angeben:
@@ -170,7 +170,7 @@ GO
 
 -- Create the database snapshot
 CREATE DATABASE SnapshotDBName  ON
-( 
+(
 NAME = OrigDB, --der logische Name der Datendatei der OrigDB
 FILENAME = 'C:\_SQLDB\SnapshotDBName.mdf' )
 AS SNAPSHOT OF OrigDB;
@@ -189,11 +189,4 @@ GO
 USE MASTER
 
 
-RESTORE DATABASE NORTHWIND from database_Snapshot = 'SN_Northwind_1152' 
-
-
-
-
-
-
-		
+RESTORE DATABASE NORTHWIND from database_Snapshot = 'SN_Northwind_1152'

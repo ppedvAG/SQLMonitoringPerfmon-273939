@@ -20,7 +20,7 @@ Aber was ist schneller: F() , Porz , Adhoc oder Sicht
 --Sichten sind langsam, da sie erst einn "Umweg" nehmen m�ssen
 --adhoc .. nicht so besonders schnell
 
---Antwort: es kommt darauf an: Die ger�chte sind schon richtig, aber nur 
+--Antwort: es kommt darauf an: Die ger�chte sind schon richtig, aber nur
 --wenn:
 		--die Rahmenbedingungen passen
 
@@ -53,9 +53,9 @@ exec gpKDSuche -- alle 91 DS
 
 create proc gpKDSuche  @kdid varchar(5)='%'
 as
-select * from customers where customerid like @kdid +'%'   
+select * from customers where customerid like @kdid +'%'
 
-exec gpKdSuche 
+exec gpKdSuche
 
 --Robert:
 create
@@ -79,7 +79,7 @@ go
 
 
 
---Sicht 
+--Sicht
 
 create table slf (id int identity, stadt int, land int);
 GO
@@ -99,7 +99,7 @@ select * from slf
 
 select * from vslf
 
-insert into slf 
+insert into slf
 select 10,100
 UNION ALL
 select 20,200
@@ -139,7 +139,7 @@ select id, stadt, land from dbo.slf
 
 select * from vslf
 
-insert into slf 
+insert into slf
 select 10,100
 UNION ALL
 select 20,200
@@ -163,11 +163,11 @@ select * from vslf
  Sichten . .. besser mit schemabinding
 	m�ssen korrekt verarbeitet werden
 
-		nicht zweckentfremden: wenn Sicht 65 Joins hat , 
+		nicht zweckentfremden: wenn Sicht 65 Joins hat ,
 			aber Abfrage braucht nur 2 Tabellen
- 
+
  */
- 
+
  alter table slf drop column Land
 
 
@@ -190,7 +190,7 @@ select * from vslf
 
  --Sicht nicht zweckentfremden
  ---wenn die 5 tabellen joined ,dann wird sie das immer tun
- select distinct companyname 
+ select distinct companyname
  from kundeumsatz where Country = 'France' and freight < 30
  set statistics time on
 
@@ -201,8 +201,3 @@ select * from vslf
 
 
 select * from orders Where orderid = 300000
-
-
-
-
-

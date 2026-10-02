@@ -11,7 +11,7 @@ Hinweis: Vor Datenbankaenderungen Umgebung, Version und Workload pruefen.
 
 /*
 
-MAXDOP 
+MAXDOP
 
 Abfragen k�nnen eine oder mehr CPUs verwenden
 
@@ -43,24 +43,24 @@ option  (maxdop 6)
 --4 Kerne: , CPU-Zeit = 625 ms, verstrichene Zeit = 166 ms.
 
 
-SQL Server-Analyse- und Kompilierzeit: 
+SQL Server-Analyse- und Kompilierzeit:
 , CPU-Zeit = 175 ms, verstrichene Zeit = 175 ms.
 
---SQL Server-Analyse- und Kompilierzeit: 
+--SQL Server-Analyse- und Kompilierzeit:
 --, CPU-Zeit = 175 ms, verstrichene Zeit = 175 ms.
---56863  -- *8 
+--56863  -- *8
 --, CPU-Zeit = 1110 ms, verstrichene Zeit = 156 ms.
 
 --MAXDOP = 0 = alle
---MAXDOP Server = 8 
+--MAXDOP Server = 8
 --MAXDOP DB = 4
---MAXDOP ABfrage = 1 
+--MAXDOP ABfrage = 1
 
 -- CPU-Zeit = 374 ms, verstrichene Zeit = 52 ms.
---nur ein Grund daf�r.. mehr CPUs haben was getan.. 
+--nur ein Grund daf�r.. mehr CPUs haben was getan..
 --scheint Sinn gemacht zu haben
 
-select * from sys.dm_os_wait_stats		   
+select * from sys.dm_os_wait_stats
 where wait_type like 'CX%'
 
 
@@ -71,7 +71,7 @@ group by country, city  option (maxdop 8)
 -- Server(4)-->DB(6)--Abfrage(8)-- es z�hlt 8
 
 
---Was sollte man einstellen: 
+--Was sollte man einstellen:
 -- der Kostenschwellwert sollte bei 25 sein.. und dann experimentieren
 --bei Datawarehouse kann die Zahl abweichen
 
@@ -84,12 +84,12 @@ group by country, city  option (maxdop 8)
 --       dann werden rigoros alle CPUs verwendet
 
 -- Seit SQL 2019 (Setup) wird folgendes vorgeschlagen: alle Prozessoren ,
----aber nicht mehr als 8 
+---aber nicht mehr als 8
 
 --W�ren nicht weniger besser gewesen?
 
 --Tats�chlich ist es eher pro Abfrage zu entscheiden, was besser ist.
---Fakt: meist kommt man mit weniger CPUs gleich schnell weg und spart 
+--Fakt: meist kommt man mit weniger CPUs gleich schnell weg und spart
 --zeitgleich CPU Leistung
 --Taskmanager sollte eine Reduzierung der Prozesssorzeit zeigen
 

@@ -42,7 +42,7 @@ Frage nach Verzeichnissen  :
 Trenne Log von Daten physikalisch (HDDs) !!
 
 
-MAXDOP 
+MAXDOP
 = Anzahl der log Prozessoren (max 8)
 -->eigenes Kapitel
 im Grunde: weiviele Kerne bekommt eine Abfrage maximal
@@ -54,8 +54,8 @@ IX Wartung, Auslagerungen beim Sortieren etwa
 
 Trenne Daten von Log und am besten eig HDDs
 
-Aber auch : 
-Anzahl der DAtendateien = Anzahl der Kerne  max 8 
+Aber auch :
+Anzahl der DAtendateien = Anzahl der Kerne  max 8
 Traceflags 1117 + 1118
 
 
@@ -66,17 +66,17 @@ Mehrere Tabellen k�nne im gleiche Block liegen, aber nur ein Thread darf zugre
 -T1118 immer gleich gro�e Dateien.. greife nie in den Mechanismus ein, der wird sonst ausser Kraft gesetzt
 
 
---Arbeitspeicher. 
+--Arbeitspeicher.
 Setup schl�gt f�r SQL einen max Speicher vor, um im worst Case nicht den gesamten RAM zu belegen
 --DAS OS braucht auch Luft zum atmen... das Setup ber�cksichtigt die Umgebung (OS)
 --Sharepoint: Wenn auf dem Server 95% Speicherauslastung, dann stellt SP Dienste
 --Begrenze den SQL Server immer im Bereich MAX RAM... (OS)
 
 
---MAX Speicher 
+--MAX Speicher
 immer einstellen (Gesamt -OS - sonstige)
 
---MIN Speicher 
+--MIN Speicher
 nur bei Konkurrrenz (weiterer Instanz) sinnvoll
 -- der mind RAM Wert wird erst belegt, wenn SQL Daten entsprechend abgelegt hat.
 

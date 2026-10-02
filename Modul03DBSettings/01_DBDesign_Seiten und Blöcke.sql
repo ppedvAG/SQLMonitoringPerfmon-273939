@@ -21,10 +21,10 @@ max 700 DS pro Seite
 
 8 zusammenh�ngende Seiten = Block
 
-Seite = Page 
+Seite = Page
 Block = Extent
 
-SQL kann mur mit einem Thread eine Seite lesen. 
+SQL kann mur mit einem Thread eine Seite lesen.
 Zwei Zugriffe ergeben einen Latch oder auch Spinocks
 Latch = supended, Spinlocks sind aktiv
 
@@ -40,7 +40,7 @@ create table t1 (id int identity, spx char(4100));
 GO
 
 
-insert into t1 
+insert into t1
 select 'XY'
 GO 20000
 --Zeit Messen
@@ -63,7 +63,7 @@ create table t1 (id int identity, spx char(4100));
 GO
 
 
-insert into t1 
+insert into t1
 select 'XY'
 GO 20000
 --Zeit Messen
@@ -76,4 +76,3 @@ GO 20000
 --Warum liest man aus der Tabelle KU 57000, wenn der dbcc nur 41000 Seiten angibt
 
 --Weil die Seiten wg char(4100) nicht voller gemacht werden k�nnen...
-

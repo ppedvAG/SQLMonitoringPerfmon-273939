@@ -12,9 +12,9 @@ Hinweis: Die Beispiele aktualisieren Preise und greifen auf die Tabelle Products
 -- LOCKS
 -- UPDLOCK, TABLOCKX
 -- PAGLOCK, ROWLOCK, TABLOCK
--- HOLDLOCK   
- --NOLOCK   
- --NOWAIT  
+-- HOLDLOCK
+ --NOLOCK
+ --NOWAIT
  --READCOMMITTED
  --READUNCOMMITTED
 

@@ -24,7 +24,7 @@ FROM table_1
 WHERE column_a < 10000
 AND column_b < 10000
 ORDER BY column_b, column_a
- 
+
 
 
 F�r Abfragen, die nur Ungleichheitspr�dikate enthalten, gibt es weniger genaue Kosteninformationen zur�ck.
@@ -66,7 +66,7 @@ set showplan_xml off
 
 with XmlNameSpaces('http://schemas.microsoft.com/sqlserver/2004/07/showplan'
                       as qp)
-  ,MissingIndexPlans(query_plan) as 
+  ,MissingIndexPlans(query_plan) as
    (
     select p.query_plan
       from sys.dm_exec_cached_plans
@@ -77,7 +77,7 @@ with XmlNameSpaces('http://schemas.microsoft.com/sqlserver/2004/07/showplan'
                //mi:MissingIndexes')=1
    )
   ,Statements(StatementId, StatementText, StatementType
-             ,StatementCost, StatementRows, MissingIndexesXml) as 
+             ,StatementCost, StatementRows, MissingIndexesXml) as
    (
      select stmt.value('(//qp:Statements/qp:StmtSimple)[1]/@StatementId'
                       ,'int')
@@ -134,7 +134,7 @@ with XmlNameSpaces('http://schemas.microsoft.com/sqlserver/2004/07/showplan'
                + ' '
                + cast(InEqualityColumnsXml.query('data(//qp:Column/@Name)')
                       as nvarchar(max)), '] [','],['))
-           ,replace(cast(IncludeColumnsXml.query('data(//qp:Column/@Name)') 
+           ,replace(cast(IncludeColumnsXml.query('data(//qp:Column/@Name)')
                       as nvarchar(max)), '] [','],[')
        from MissingIndex
    )
@@ -178,7 +178,7 @@ select * from sys.dm_db_missing_index_columns
 
 select db_name(d.database_id) as db_name
       ,d.statement
-      ,d.equality_columns, d.inequality_columns 
+      ,d.equality_columns, d.inequality_columns
       ,d.included_columns
       ,cast(gs.avg_total_user_cost as decimal(8, 2)) as avg_total_user_cost
       ,gs.avg_user_impact

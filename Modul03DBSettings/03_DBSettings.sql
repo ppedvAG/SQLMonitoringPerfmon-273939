@@ -18,7 +18,7 @@ ALTER DATABASE [Northwind]
 GO
 
 --update statistics [dbo].[Record] idx_record_name with resample on partitions (1);
---A robust on-demand incremental statistics update process on partitioned tables will boost performance stability, 
+--A robust on-demand incremental statistics update process on partitioned tables will boost performance stability,
 --reduce resource consumption (I/O and CPU) and significantly shrink the maintenance window for very large tables.
 
 
@@ -26,7 +26,7 @@ ALTER DATABASE [Northwind]
     SET DATE_CORRELATION_OPTIMIZATION ON WITH NO_WAIT;
 --Gibt es Abh�ngigkeiten zwischen Datumsfeldern..?
 --Etwa immer 14 nach Termin1 , dann Termin2
---SQL Server kann die Korrelation erkennen und entsprechen 
+--SQL Server kann die Korrelation erkennen und entsprechen
 --mit geeigneten Statistiken die Daten effizienter holen
 --da Plan auch exakter wird
 GO
@@ -44,7 +44,7 @@ GO
 -->Arbeitsauslastungen weisen eine hohe Konfliktrate auf.
 -->Bei Schreibvorg�ngen in das Transaktionsprotokoll treten Engp�sse auf.
 -->Datenverluste sind in gewissem Umfang vertretbar.
- --Wegschreiben ins Log: EXECUTE sys.sp_flush_log  
+ --Wegschreiben ins Log: EXECUTE sys.sp_flush_log
 
  --Ght allerdings nicht �berall:
  --

@@ -46,7 +46,7 @@ Backup: regelm��ig
 tempdb
 #tab   ##tab
 Zeilenversionierung
-IX Rebuild 
+IX Rebuild
 Auslagerungen
 --so schnell sein
 
@@ -66,7 +66,7 @@ mssqlsystemressources-versteckte DB .. black box
 Sicherung der SystemDbs
 
 Wartungsplan
-Vollst�ndige Sicherung --> SytemDbs --> einmal t�glich -- > 
+Vollst�ndige Sicherung --> SytemDbs --> einmal t�glich -- >
 --> Unterordner anlegen lassen -->
 --> Checksumme+Integrit�tspr�fung + Kompression + bei Fehler fortsetzen
 --> Logfile + Email, wenn man will
@@ -76,23 +76,23 @@ V TTT D TTT D TTT DTT
 
 */
 --Vollsicherung
-BACKUP DATABASE [TestDb] TO  DISK = N'C:\_SQLBACKUP\TestDb1.bak' 
-WITH NOFORMAT, NOINIT,  NAME = N'TestDb-Voll', 
+BACKUP DATABASE [TestDb] TO  DISK = N'C:\_SQLBACKUP\TestDb1.bak'
+WITH NOFORMAT, NOINIT,  NAME = N'TestDb-Voll',
 SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 --SQL Server Dienst
 --per Job--> SQL Agent
 
 --Diff
-BACKUP DATABASE [TestDb] TO  DISK = N'C:\_SQLBACKUP\TestDb.bak' 
-WITH  DIFFERENTIAL 
+BACKUP DATABASE [TestDb] TO  DISK = N'C:\_SQLBACKUP\TestDb.bak'
+WITH  DIFFERENTIAL
 , NOFORMAT, NOINIT,  NAME = N'TestDb-Diff'
 , SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 
 --Tlog
-BACKUP LOG [TestDb] TO  DISK = N'C:\_SQLBACKUP\TestDb.bak' 
-WITH NOFORMAT, NOINIT,  NAME = N'TestDb-Tlog', 
+BACKUP LOG [TestDb] TO  DISK = N'C:\_SQLBACKUP\TestDb.bak'
+WITH NOFORMAT, NOINIT,  NAME = N'TestDb-Tlog',
 SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 

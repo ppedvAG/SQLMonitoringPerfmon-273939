@@ -101,7 +101,7 @@ SELECT DB_ID(N'nw_1616');
 -- KILL <SPID>; -- Nur nach Pruefung der Sitzung und des Datenbankkontexts ausfuehren.
 
 
---oder so 
+--oder so
 
 --alle laufenden Prozesse der Benutzer
 SELECT *

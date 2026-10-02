@@ -11,25 +11,25 @@ Hinweis: Einige Beispiele setzen dbo.Kunden sowie geeignete Berechtigungen vorau
 /*
 Wofür Statistiken?
 SQL Server muss bevor die Abfragen ausgeführt werden eine Information besitzten,
-wieviele DAtensätze in etwa zurückkommen werden. Das ist wichtig für die Wahl 
+wieviele DAtensätze in etwa zurückkommen werden. Das ist wichtig für die Wahl
 von IX SEEK oder doch Table_SCAN.
 
 Probleme:
-- Sind die Statistiken nicht aktuell und daher ungenau, kann ein 
+- Sind die Statistiken nicht aktuell und daher ungenau, kann ein
 falscher Plan entstehen.
 
 - SQL Server macht automatisch Statistiken über eine Spalte ,
-aber nicht über Kombinationen. Dadurch können auch falsche Annahmen bzgl der 
-Anzahl der Datensätze entstehen.  
+aber nicht über Kombinationen. Dadurch können auch falsche Annahmen bzgl der
+Anzahl der Datensätze entstehen.
 
--Bei der Erstellung von Statistiken wird bei größeren Tabellen nur Stichproben 
+-Bei der Erstellung von Statistiken wird bei größeren Tabellen nur Stichproben
 verwendet. Was wenn: Stichprobe nicht repräsentiv?  --> Falscher Plan möglich
 
 
 
 1. Welche Statistiken generiert SQL Server?
-SQL Server erzeugt und pflegt Statistiken für den Abfrageoptimierer, 
-um Selektivitäten von Prädikaten abzuschätzen. 
+SQL Server erzeugt und pflegt Statistiken für den Abfrageoptimierer,
+um Selektivitäten von Prädikaten abzuschätzen.
 
 Es gibt:
 
@@ -38,26 +38,26 @@ Automatisch angelegt, sobald ein Index erstellt wird.
 
 Enthalten Histogramme über den führenden Schlüssel des Indexes.
 
-Beispiel: Bei 
+Beispiel: Bei
 CREATE INDEX idx_Test (Spalte1) --wird automatisch stat_idx_Test_Spalte1 erstellt.
 
 b) Spaltenstatistiken (Auto-Stats)
 Automatisch angelegt, wenn Abfragen Filter auf Spalten enthalten
 , die noch nicht durch Statistiken abgedeckt sind.
 
-Beispiel: 
-SELECT ... WHERE Nachname = 'Müller' 
+Beispiel:
+SELECT ... WHERE Nachname = 'Müller'
 --→ SQL Server legt stat_Nachname an, falls nicht vorhanden.
 Diese Statistiken sind bei größeren Mengen nicht genau. Es wird nur eine Samplerate verwendet
 
 c) Manuelle Statistiken
-Mit 
-CREATE STATISTICS 
---können gezielt Statistiken erstellt werden, z. B. 
+Mit
+CREATE STATISTICS
+--können gezielt Statistiken erstellt werden, z. B.
 --auf mehreren Spalten oder mit Filterbedingungen.
 
 d) Filterte Statistiken
-Nur für einen Teilbereich der Daten, z. B. 
+Nur für einen Teilbereich der Daten, z. B.
 CREATE STATISTICS s1 ON Kunden(Region) WHERE Land = 'DE'
 
 2. Wie sind Statistiken aufgebaut?
@@ -69,9 +69,9 @@ Eine Statistik besteht aus drei Hauptkomponenten:
     -Dichte (Density = 1 / DVs bei eindeutiger Verteilung)
     -Datum der letzten Aktualisierung
 -Dichtevektor (Density Vector)
-    Für jede Spaltenkombination in einer Statistik wird 
+    Für jede Spaltenkombination in einer Statistik wird
     die gegenseitige Dichte berechnet.
-    Dichte = 1 / Kardinalität bei gleichmäßiger Verteilung 
+    Dichte = 1 / Kardinalität bei gleichmäßiger Verteilung
     (ansonsten geschätzt).
 - Histogramm (für führende Spalte)
     Maximal 200 Schritte (Buckets).
@@ -97,25 +97,25 @@ a) Automatische Aktualisierung (AUTO_UPDATE_STATISTICS)
 Seit SQL Server 2016 (mit Traceflag 2371 bzw. Standard ab SP1):
      Dynamischer Schwellenwert bei großen Tabellen (prozentual sinkend, mindestens 500 Zeilen).
      Formel (vereinfacht):
-    
-    Änderungsschwelle = CEILING(500 + (0.0000000000001 * n))  
+
+    Änderungsschwelle = CEILING(500 + (0.0000000000001 * n))
     -- exakte Formel siehe Docs
-    Effekt: 
-    Bei Millionen Zeilen werden Statistiken viel früher 
+    Effekt:
+    Bei Millionen Zeilen werden Statistiken viel früher
     aktualisiert als bei der alten 20%-Regel.
 
 b) Manuelle Aktualisierung
-Mit 
+Mit
 UPDATE STATISTICS tabelle [statistik] WITH FULLSCAN | SAMPLE X PERCENT
     FULLSCAN: alle Zeilen werden gelesen → genaues Histogramm.
     SAMPLE: nur ein Teil der Zeilen wird gelesen → schneller, aber ungenauer.
 
-sp_updatestats: aktualisiert alle Statistiken in der Datenbank 
+sp_updatestats: aktualisiert alle Statistiken in der Datenbank
     basierend auf Änderungsrate.
 
 c) Methoden der Aktualisierung
 Sampling-basiert (Standard):
-    SQL Server wählt automatisch eine Stichprobe aus Zeilen aus 
+    SQL Server wählt automatisch eine Stichprobe aus Zeilen aus
     und schätzt Verteilungen.
 
 Vollständiger Scan (FULLSCAN):
@@ -143,44 +143,44 @@ Für Werte zwischen Buckets:
 Selectivity = AVG_RANGE_ROWS / Total_Rows
 Für Werte außerhalb des Histogramms (unknown):
 
-Schätzung basierend auf Dichtevektor oder Standardwerte 
+Schätzung basierend auf Dichtevektor oder Standardwerte
 (z. B. 9 % bei unbekannten Werten in alten Versionen).
 
 c) Mehrspaltenstatistiken
 Wenn nur führende Spalte im Prädikat: Histogramm
-Wenn weitere Spalten gefiltert werden: 
+Wenn weitere Spalten gefiltert werden:
 Dichtevektor → Annahme Unabhängigkeit der Spalten
 
 Schätzung:
 
 Estimated Rows = Total_Rows * Density(col1) * Density(col2) * ...
 
-Dies kann zu Fehlabschätzungen führen, wenn Spalten 
-stark korreliert sind 
+Dies kann zu Fehlabschätzungen führen, wenn Spalten
+stark korreliert sind
 → Lösung: Mehrspaltenstatistiken erstellen.
 
 5. Änderungen in SQL Server 2014–2022
-Traceflag 2371 
+Traceflag 2371
 → dynamische Schwelle für Auto-Stats (Standard ab SQL 2016 SP1).
 
 Incremental Statistics für Partitionen.
 Temporale Tabellen und Columnstore Indexe nutzen spezielle Statistikupdates.
 
-Async Auto Update Stats (ASYNC) 
-→ Abfrage läuft mit alten Stats weiter, 
+Async Auto Update Stats (ASYNC)
+→ Abfrage läuft mit alten Stats weiter,
 während Update im Hintergrund erfolgt.
 
 Auto Update Stats für Columnstore ab SQL Server 2014.
 
-Neue Kardinalitätsschätzer (Cardinality Estimator, CE) 
-in SQL Server 2014+ 
+Neue Kardinalitätsschätzer (Cardinality Estimator, CE)
+in SQL Server 2014+
 → komplexere Formeln, bessere Annäherung bei Korrelationen.
 
 Zusammenfassung
-Statistiken = Histogramm + Dichteinformationen, automatisch 
+Statistiken = Histogramm + Dichteinformationen, automatisch
 oder manuell erstellt.
 
-Update-Trigger: bis SQL2014 „20 % + 500 Zeilen“; 
+Update-Trigger: bis SQL2014 „20 % + 500 Zeilen“;
 seit SQL2016 dynamisch (Traceflag 2371 integriert).
 
 Methoden: Sampling, FULLSCAN, inkrementell für Partitionen.
@@ -216,8 +216,8 @@ FROM sys.all_objects a CROSS JOIN sys.all_objects b;
 
 
 -- Abfrage auf Spalte ohne Index → Auto-Statistik wird erstellt
-SELECT COUNT(*) 
-FROM dbo.Kunden 
+SELECT COUNT(*)
+FROM dbo.Kunden
 WHERE Nachname = 'A...';
 
 
@@ -226,7 +226,7 @@ DBCC SHOW_STATISTICS ('dbo.Kunden', '_WA_Sys_00000002_01142BA1');
 
 /*
 Name                          Updated              Rows    Rows Sampled    Steps    Density   ...
-----------------------------  ------------------  ------  -------------  ------  ---------  
+----------------------------  ------------------  ------  -------------  ------  ---------
 _WA_Sys_00000002_1234ABCD      Aug 13 2025 16:30   10000   10000           200      0.0025
 
 
@@ -315,10 +315,10 @@ CREATE TABLE dbo.Kunden
 /* 2) Mit Zufallsdaten füllen (10.000 Zeilen) */
 INSERT INTO dbo.Kunden (Nachname, Land)
 SELECT TOP (10000)
-    CHAR(65 + ABS(CHECKSUM(NEWID())) % 26) + 
-    CHAR(65 + ABS(CHECKSUM(NEWID())) % 26) + 
+    CHAR(65 + ABS(CHECKSUM(NEWID())) % 26) +
+    CHAR(65 + ABS(CHECKSUM(NEWID())) % 26) +
     CHAR(65 + ABS(CHECKSUM(NEWID())) % 26) AS Nachname,
-    CASE 
+    CASE
         WHEN RAND(CHECKSUM(NEWID())) < 0.7 THEN 'DE'
         WHEN RAND(CHECKSUM(NEWID())) < 0.9 THEN 'AT'
         ELSE 'CH'
@@ -326,17 +326,17 @@ SELECT TOP (10000)
 FROM sys.all_objects a CROSS JOIN sys.all_objects b;
 
 /* 3) Abfrage, um Auto-Statistik anzulegen */
-SELECT COUNT(*) 
-FROM dbo.Kunden 
+SELECT COUNT(*)
+FROM dbo.Kunden
 WHERE Nachname LIKE 'A%';
 
 /* 4) Alle Statistiken der Tabelle auflisten */
-SELECT 
-    s.name, 
-    s.auto_created, 
-    s.user_created, 
-    sp.last_updated, 
-    sp.rows, 
+SELECT
+    s.name,
+    s.auto_created,
+    s.user_created,
+    sp.last_updated,
+    sp.rows,
     sp.rows_sampled
 FROM sys.stats AS s
 CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) AS sp
@@ -360,9 +360,9 @@ UPDATE STATISTICS dbo.Kunden;
 UPDATE STATISTICS dbo.Kunden WITH FULLSCAN;
 
 /* 9) Anzeige nach Update erneut prüfen */
-SELECT 
-    s.name, 
-    sp.last_updated, 
+SELECT
+    s.name,
+    sp.last_updated,
     sp.modification_counter
 FROM sys.stats AS s
 CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) AS sp

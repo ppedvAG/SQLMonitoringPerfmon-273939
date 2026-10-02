@@ -30,7 +30,7 @@ Diensten
 
 SQL Server (DB)
 SQL Agent (jobs)
-SQL Volltextsuche 
+SQL Volltextsuche
 SQL Browser = Rezeption (Port 1434 UDP)
 Im Falle von mehereren INstanzen
 
@@ -78,12 +78,3 @@ select * from Kunden where FamName like 'maier'
 
 select soundex('maier')
 select soundex('meyr')
-
-
-
-
-
-
-
-
-

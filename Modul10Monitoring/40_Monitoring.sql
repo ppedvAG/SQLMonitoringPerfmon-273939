@@ -43,10 +43,10 @@ besser: alle wait_time addieren
 ---- Reihenfolge f�r Monitoring
 --1.  Taskmanager: Ausschluss andere Dinge (Anitvirentool, Viren, Trojaner..)
 ---    zB mslaugh.exe   teakids.exe mit Admin acount
---> nix gefunden...-->SQL Server 
+--> nix gefunden...-->SQL Server
 
 --2 SQL Server genauer anschauen
--->   Aktivit�tsmonitor  
+-->   Aktivit�tsmonitor
 ----> Wartezust�nde.. worauf warten aktuell. innerhalb der letzten Sekunden bzw in der letzten Zeit
 -------> damit haben wir schon mal die Richtung , in der wir weitersehen m�ssen.
 
@@ -69,10 +69,10 @@ select * from sys.dm_os_wait_stats
 --sammlet alle Wartezeiten kummulierend seit Neustart
 
 
---Wenn wir alle zB 10min die Wartenzeiten speichern, 
+--Wenn wir alle zB 10min die Wartenzeiten speichern,
 
 LCK_M_S	   242	5894499	1855310	33    um 10 Uhr
-LCK_M_S	   242	5894499	1855310	33   um 10:10 
+LCK_M_S	   242	5894499	1855310	33   um 10:10
 LCK_M_S	   242	8745766	1855310	33  um 10:20
 
 --------------DMVs Data Management Views-------------
@@ -88,7 +88,7 @@ select * from sysprocesses --alle Prozesse der User haben ein SPID > 50
 
 
 ---per TSQL ----------------------------------------
--- set statistics io, time on 
+-- set statistics io, time on
 --sowie Abfragepl�ne
 
 --Diese bieten wertvolle Hinweise, erfordern aber aktives Monitoring
@@ -102,7 +102,7 @@ select * from custorders where id = 100
 
 --nach QueryStore und IX Vorschlag aus dem QueryStore
 --, CPU-Zeit = 0 ms, verstrichene Zeit = 0 ms.
---Seiten : 4 
+--Seiten : 4
 
 
 
@@ -126,13 +126,13 @@ Was geht .. auf Server--> Taskmanager +  Ressourcemonitor
 
 select * from sysprocesses  where spid <= 50.. alles andere = User
 
-wir finden hier also : aktive Prozessen, die Wartezeiten und Warteressourcen, die IO Aktivt�ten,  Die teruersten aktiven bzw vergangenen Abfragen 
+wir finden hier also : aktive Prozessen, die Wartezeiten und Warteressourcen, die IO Aktivt�ten,  Die teruersten aktiven bzw vergangenen Abfragen
 
 --------------------------------------------------------------
 
 
 
----jedes Tool im SQL Server basiert eigtl auf 
+---jedes Tool im SQL Server basiert eigtl auf
 ----------------DMV  DataManagement Views---------------
 
 Systemsichten.. die nach dem Neustart des SQL Server geleert

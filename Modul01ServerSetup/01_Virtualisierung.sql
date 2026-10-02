@@ -13,12 +13,12 @@ Fragen , die man sich stellen sollte:
 
 Hat die VM auch die Ressourcen
 , die sie auch ohne Virtualisierung h�tte?
- 
 
 
-Ziel Nr 1 (neben genug RAM)		 
 
-HDD!!!!!! optimieren. 
+Ziel Nr 1 (neben genug RAM)
+
+HDD!!!!!! optimieren.
 
 IO reduzieren!!! IO schneller machen
 
@@ -36,11 +36,11 @@ CPU
 
 ! Bilde in der VM die reale Umgebung ab..
 
-NUMA: 
+NUMA:
 NUMA Architektur...zu jedem RAM Sockel (Knoten) geh�rt ein bestimmter Prozessor
 	Vorteil der ZUgriff ist sehr schnell
 	Zugriff auf RAM eines anderen Sockel h�here Latenzzeit
-      
+
 Was, wenn die Architekur in VM was anderes sieht
 , als es in der realit�t ist..
 Ausnahme: Lizenzgr�nde: SQL Express 1 Sockel 4 Kerne

@@ -17,7 +17,7 @@ CLUST IX
 =Tabelle in sortierter Form
 nur 1x pro Tabelle
 gut bei Bereichsabfragen, weil sortiert
-gut bei eindeutigen Werten 
+gut bei eindeutigen Werten
 per SSMS wird immer beim PK ein CL IX gesetzt.. in vielen F�lle dumm
 
 
@@ -70,8 +70,8 @@ St�rt, dann, wenn man keine neue mehr anlegen kann, weil zu viele IX existiere
 ind Sicht
 generiert auf das Ergebnis der Sicht einen gruppierten IX
 unterliegt jedich sehr vielen Randbedingungen
-(	Eindeutigkeit,deterministisch, 
-	With schemabinding,Basistabelle und Sicht derselbe Besitzer, 
+(	Eindeutigkeit,deterministisch,
+	With schemabinding,Basistabelle und Sicht derselbe Besitzer,
 	bei group by muss count_big(*), kein AVG, sondern errechnen lassen ..usw..)
 
 -------------------------------
@@ -108,7 +108,7 @@ toDO mit Indizes: Defragmentieren , �berfl�ssige entfernen und fehlende erst
 
 --Stat:  akt nach 20% �nderung plus 500  zu sp�t, weil ab  ca 1% -- jeden Tag aktualisieren
 
---IX Reorg ab 10% 
+--IX Reorg ab 10%
 --Rebuild ab 30%
 
 exec sp_updatestats
@@ -118,11 +118,11 @@ TIPP:
 
 IX mit eingeschlossenen Spalten
 Die Schl�sselspalten blden sich aus den Spalten der where Bedingung
-Die eingeschlossenen Spalten entnimmt man aus dem SELECT 
+Die eingeschlossenen Spalten entnimmt man aus dem SELECT
 
 
 CLUSTERED INDEX.. als Prim�schl�ssel oft pure Verschwendung
-CL spielt seine Vorteile bei Berecihsabfragen aus und wird nie Lookup Vorg�nge erzeugen... 
+CL spielt seine Vorteile bei Berecihsabfragen aus und wird nie Lookup Vorg�nge erzeugen...
 allerdings gibt es diesen nur 1 mal pro Tabellen... Also gut vorher �berlegen
 --�ber die Entwurfsansicht der Tabelle--> rechte Maus--> Indizes und Schl�ssel-- als Clustered erstellen (Ja / Nein) l��t sich das �ndern.
 
@@ -281,40 +281,3 @@ select * from sys.dm_db_index_usage_stats
 --1 = CL IX
 --0 = Heap
 --> 1   NCL IX
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

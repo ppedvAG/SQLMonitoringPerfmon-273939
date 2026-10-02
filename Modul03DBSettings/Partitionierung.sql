@@ -42,10 +42,10 @@ zu 2)
 
 	man braucht:
 
-		-Dateigruppen 
+		-Dateigruppen
 
 		-function
-		
+
 			create partition function fname (datentyp)
 			as
 			RANGE LEFT |RIGHT for Values(Grenzwert1, Grenzwert2,..)
@@ -64,11 +64,11 @@ zu 2)
 			create table tabellename (id int, ...) ON SchName(Spalte)
 
 		+ Flexibel
-			 Grenze dazu : 
+			 Grenze dazu :
 			 alter partition scheme schName next used Dgruppe
 
 			 alter partition function fname() split range (grenzwert)
-		 
+
 
 		 Grenze entfernen
 			 alter partition function fName merge range (grenzwert)
@@ -86,7 +86,7 @@ zu 2)
 			Daten werden nicht verschoben, sondern part wird in Tabe umgewandelt
 
 
-	best Tabelle, die auf einer Dgruppen oder Schema liegen, k�nnen nur mit einem L�schen 
+	best Tabelle, die auf einer Dgruppen oder Schema liegen, k�nnen nur mit einem L�schen
 	auf andere Dgruppen oder Schemas verschoben werden
 	---Ausnahme best Index
 
@@ -165,7 +165,7 @@ insert into umsatz (id,jahr, spx) values(1,2017, 100)
 --Sequenzen
 USE [testdb]
 
-CREATE SEQUENCE [dbo].[UID] 
+CREATE SEQUENCE [dbo].[UID]
  START WITH 2
  INCREMENT BY 1
 
@@ -240,7 +240,7 @@ set statistics io, time off
 declare @i as int = 0
 
 while @i<=20000
-	begin 
+	begin
 		insert into ptab values(@i, 'XY')
 		set @i+=1
 	end
@@ -292,7 +292,7 @@ PARTITION [fZahl] TO ([bis100], [bis200], [bis5000], [rest])
 
 /****** Object:  PartitionFunction [fZahl]    Script Date: 09.12.2020 14:17:31 ******/
 CREATE PARTITION FUNCTION [fZahl](int)
-AS 
+AS
 RANGE LEFT FOR VALUES (100, 200, 5000)
 GO
 
@@ -310,7 +310,7 @@ from ptab group by $partition.fzahl(nummer)
 select * from ptab where nummer = 6401
 --auch Kompresssion pro Part
 ALTER TABLE [dbo].[ptab]
-REBUILD PARTITION = 3 
+REBUILD PARTITION = 3
 WITH(DATA_COMPRESSION = PAGE )
 
 
@@ -340,19 +340,19 @@ PARTITION [fZahl] TO ([bis100], [bis200], [bis5000], [rest])
 
 /****** Object:  PartitionFunction [fZahl]    Script Date: 09.12.2020 14:17:31 ******/
 CREATE PARTITION FUNCTION [fZahl](datetime)
-AS 
+AS
 RANGE LEFT FOR VALUES ('31.12.2019 23:59:59.997','1.1.2020','')
 GO ---------------------------korrekt               falsch
 
 --A bis M     N bis R   S bis Z
 CREATE PARTITION FUNCTION [fZahl](varchar(50))
-AS 
+AS
 RANGE LEFT FOR VALUES ('N','RZZZZZZZZZZZZZZZZZ') --kein Wildcards
 GO
 
 
 CREATE PARTITION FUNCTION [fZahl](date)
-AS 
+AS
 RANGE LEFT FOR VALUES (Getdate()-30, getdate()+30)
 GO
 �--nicht sinnvoll
@@ -363,5 +363,3 @@ PARTITION [fZahl] TO ([PRIMARY], [PRIMARY], [PRIMARY], [PRIMARY])
 
 --primary ja..geht. ..und macht Sinn, da wir es wie viele kleine Tabellen behandeln
 --ab SQL 2016 Sp1 auch in Std oder sogar Express
-
-

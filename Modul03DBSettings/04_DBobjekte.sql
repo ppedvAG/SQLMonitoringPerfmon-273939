@@ -27,7 +27,7 @@ d       ab            c
 A b c d
 
 --langsam nach schnell----------->es k�nnte auch das passieren
-c                d       ab            
+c                d       ab
 
 
 
@@ -57,13 +57,13 @@ GO
 
 create view vKundeumsatz
 as
-SELECT Customers.CompanyName, Customers.City, Customers.Country, 
-   Orders.OrderID, Orders.OrderDate, Orders.Freight, Orders.CustomerID, 
-   [Order Details].ProductID, [Order Details].UnitPrice, 
+SELECT Customers.CompanyName, Customers.City, Customers.Country,
+   Orders.OrderID, Orders.OrderDate, Orders.Freight, Orders.CustomerID,
+   [Order Details].ProductID, [Order Details].UnitPrice,
    [Order Details].Quantity, Products.ProductName
 FROM Customers INNER JOIN
    Orders ON Customers.CustomerID = Orders.CustomerID INNER JOIN
-   [Order Details] ON 
+   [Order Details] ON
    Orders.OrderID = [Order Details].OrderID INNER JOIN
    Products ON [Order Details].ProductID = Products.ProductID
 GO
@@ -73,13 +73,13 @@ select * from vKundeumsatz
 
 create proc procDemo @par1 int
 as
-SELECT Customers.CompanyName, Customers.City, Customers.Country, 
-   Orders.OrderID, Orders.OrderDate, Orders.Freight, Orders.CustomerID, 
-   [Order Details].ProductID, [Order Details].UnitPrice, 
+SELECT Customers.CompanyName, Customers.City, Customers.Country,
+   Orders.OrderID, Orders.OrderDate, Orders.Freight, Orders.CustomerID,
+   [Order Details].ProductID, [Order Details].UnitPrice,
    [Order Details].Quantity, Products.ProductName
 FROM Customers INNER JOIN
    Orders ON Customers.CustomerID = Orders.CustomerID INNER JOIN
-   [Order Details] ON 
+   [Order Details] ON
    Orders.OrderID = [Order Details].OrderID INNER JOIN
    Products ON [Order Details].ProductID = Products.ProductID
    where productid = @par
@@ -101,7 +101,7 @@ end
 
 select dbo.fRsumme(10248)
 
-select dbo.frsumme(orderid), * from orders 
+select dbo.frsumme(orderid), * from orders
 
 
 select * from [Order Details]
@@ -117,16 +117,14 @@ select * from customers where left(customerid,1) = 'A'
 
 select * from customers where customerid ='ALFKI'
 
-select * 
-from 
-		customers 
+select *
+from
+		customers
 where	customerid ='ALFKI'
 
 
 
-select * 
-from 
-		Customers 
+select *
+from
+		Customers
 where	Customerid ='ALFKI'
-
-
