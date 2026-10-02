@@ -20,51 +20,40 @@ Hinweis: Die Beispiele aktualisieren Preise und greifen auf die Tabelle Products
 
  ---
 
- --set transaction isolation level read uncommitted (Lesen trotz update)
- --                                     repeatable read (nur lesen, kein Update, aber insert
- --                                     Serializable  (kein Insert)   
-Begin tran
-UPDATE Products 
-WITH (Rowlock)  
-SET Unitprice = Unitprice * 1.10  
-WHERE ProductID between 1 and 5;  
-rollback
+ -- Isolation levels and lock hints address different concurrency problems.
 
-Begin tran
-UPDATE Products 
-WITH (tablock)  
-SET Unitprice = Unitprice * 1.10  
-WHERE ProductID between 1 and 5;  
-rollback
+ BEGIN TRANSACTION;
+ UPDATE dbo.Products WITH (ROWLOCK)
+ SET UnitPrice = UnitPrice * 1.10
+ WHERE ProductID BETWEEN 1 AND 5;
+ ROLLBACK TRANSACTION;
 
+ BEGIN TRANSACTION;
+ UPDATE dbo.Products WITH (TABLOCK)
+ SET UnitPrice = UnitPrice * 1.10
+ WHERE ProductID BETWEEN 1 AND 5;
+ ROLLBACK TRANSACTION;
 
-Begin tran
-UPDATE Products 
-WITH (pagLock)  
-SET Unitprice = Unitprice * 1.10  
-WHERE ProductID between 1 and 5;  
-rollback
+ BEGIN TRANSACTION;
+ UPDATE dbo.Products WITH (PAGLOCK)
+ SET UnitPrice = UnitPrice * 1.10
+ WHERE ProductID BETWEEN 1 AND 5;
+ ROLLBACK TRANSACTION;
 
-Begin tran
-UPDATE Products 
-WITH (Nowait)  
-SET Unitprice = Unitprice * 1.10  
-WHERE ProductID between 1 and 5;  
-rollback
+ BEGIN TRANSACTION;
+ UPDATE dbo.Products WITH (NOWAIT)
+ SET UnitPrice = UnitPrice * 1.10
+ WHERE ProductID BETWEEN 1 AND 5;
+ ROLLBACK TRANSACTION;
 
+ BEGIN TRANSACTION;
+ UPDATE dbo.Products WITH (HOLDLOCK)
+ SET UnitPrice = UnitPrice * 1.10
+ WHERE ProductID BETWEEN 1 AND 5;
+ ROLLBACK TRANSACTION;
 
-Begin tran
-UPDATE Products 
-WITH (Holdlock)  
-SET Unitprice = Unitprice * 1.10  
-WHERE ProductID between 1 and 5;  
-rollback
-
-
-
-Begin tran
-select * from Products 
-WITH (readuncommitted)  
-WHERE ProductID between 1 and 5;  
-rollback
-
+ BEGIN TRANSACTION;
+ SELECT *
+ FROM dbo.Products WITH (READUNCOMMITTED)
+ WHERE ProductID BETWEEN 1 AND 5;
+ ROLLBACK TRANSACTION;

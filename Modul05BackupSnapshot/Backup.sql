@@ -99,7 +99,7 @@ BACKUP LOG [Northwind] TO  DISK = N'C:\_SQLBACKUP\northwind.bak'
 		SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
 
-
+/*
 Wir sichern : V TTT D TTT 
 
 --RESTORE
@@ -156,7 +156,7 @@ Error : 10:34
 	--DB with replace
 
 
-
+*/
 	--4. Wenn ich wüsste:--> DB Momentaufnahme
 
 
@@ -197,4 +197,3 @@ RESTORE DATABASE NORTHWIND from database_Snapshot = 'SN_Northwind_1152'
 
 
 		
-

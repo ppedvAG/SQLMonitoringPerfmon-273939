@@ -10,19 +10,20 @@ Hinweis: Das Skript aendert die Datenbankkonfiguration. Datenbankname,
 Berechtigungen und SQL-Server-Version vorher pruefen.
 */
 
-use [master];
+USE [master];
 GO
 
-ALTER DATABASE [Northwind] 
-	SET AUTO_CREATE_STATISTICS ON(INCREMENTAL = ON)
+ALTER DATABASE [Northwind]
+    SET AUTO_CREATE_STATISTICS ON (INCREMENTAL = ON);
+GO
 
 --update statistics [dbo].[Record] idx_record_name with resample on partitions (1);
 --A robust on-demand incremental statistics update process on partitioned tables will boost performance stability, 
 --reduce resource consumption (I/O and CPU) and significantly shrink the maintenance window for very large tables.
 
 
-ALTER DATABASE [Northwind] 
-	SET DATE_CORRELATION_OPTIMIZATION ON WITH NO_WAIT
+ALTER DATABASE [Northwind]
+    SET DATE_CORRELATION_OPTIMIZATION ON WITH NO_WAIT;
 --Gibt es Abh�ngigkeiten zwischen Datumsfeldern..?
 --Etwa immer 14 nach Termin1 , dann Termin2
 --SQL Server kann die Korrelation erkennen und entsprechen 
@@ -31,8 +32,8 @@ ALTER DATABASE [Northwind]
 GO
 
 
-ALTER DATABASE [Northwind] 
-	SET DELAYED_DURABILITY = ALLOWED WITH NO_WAIT
+ALTER DATABASE [Northwind]
+    SET DELAYED_DURABILITY = ALLOWED WITH NO_WAIT;
 GO
 --Client bekommt Commit, obwohl TX noch nicht in LOG
 --festgeschrieben
@@ -48,27 +49,31 @@ GO
  --Ght allerdings nicht �berall:
  --
 
-ALTER DATABASE 
-	SCOPED CONFIGURATION SET MAXDOP = 4;
+USE [Northwind];
 GO
-ALTER DATABASE 
-	SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = On;
---this will work same as enabling the Trace Flag 4199 in your SQL Server.
+
+ALTER DATABASE SCOPED CONFIGURATION
+    SET MAXDOP = 4;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION
+    SET QUERY_OPTIMIZER_HOTFIXES = ON;
+-- Aehnlicher Zweck wie das Aktivieren des Traceflags 4199 fuer die Datenbank.
+GO
 
 -----------------------------------------
-ALTER DATABASE [Northwind] 
-	SET ALLOW_SNAPSHOT_ISOLATION ON
+ALTER DATABASE [Northwind]
+    SET ALLOW_SNAPSHOT_ISOLATION ON;
 GO
 
-ALTER DATABASE [Northwind] 
-	SET READ_COMMITTED_SNAPSHOT ON WITH NO_WAIT
+ALTER DATABASE [Northwind]
+    SET READ_COMMITTED_SNAPSHOT ON WITH NO_WAIT;
 
 --Ein �ndern eines Datensatzes hindert nicht mehr den Zugriff der anderen
 --aber: es werden Versionen in die tempdb kopiert
 --evtl massive Last auf tempdb
 
 
-ALTER DATABASE SCOPED CONFIGURATION 
-CLEAR PROCEDURE_CACHE ;
+ALTER DATABASE SCOPED CONFIGURATION
+CLEAR PROCEDURE_CACHE;
 -- vs dbcc freeproccache leert den gesamten Planspeicher des SQL Server
-

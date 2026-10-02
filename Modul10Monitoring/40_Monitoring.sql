@@ -10,6 +10,7 @@ Hinweis: DMV-Werte sind oft seit dem letzten Start kumuliert und koennen
 zurueckgesetzt werden; Einzelwerte sind nicht als Beweis fuer einen Engpass zu werten.
 */
 
+
 --�berwachung
 
 /*
@@ -168,15 +169,12 @@ oder Tools zum Aufzeichnen verwenden wie Datensammler oder QueryStore
 */
 
 --Wie findet man Systemsichten?.. Aber es gibt auch viele, die nicht dm beginnen..:-(
-select * from sys.dm_os...    --SQL Server
-select * from sys.dm_db... --rund um Datenbanken
+-- SELECT * FROM sys.dm_os... -- Platzhalter fuer SQL-Server-DMVs.
+-- SELECT * FROM sys.dm_db... -- Platzhalter fuer Datenbank-DMVs.
 
 --zB
 select * from sys.dm_db_index_usage_stats
 
-
-
-*/
 
 
 select * from sys.dm_os_wait_stats
@@ -205,5 +203,4 @@ select * from sys.dm_os_performance_counters
 
 
 
-*/
-
+-- Ende der Monitoring-Beispiele.

@@ -10,13 +10,32 @@ Hinweis: Voraussetzung sind das Northwind-Schema und passende CREATE VIEW-Rechte
 
 CREATE VIEW [dbo].[KundenUmsatz]
 AS
-SELECT        dbo.Customers.CustomerID, dbo.Customers.CompanyName, dbo.Customers.ContactName, dbo.Customers.ContactTitle, dbo.Customers.City, dbo.Customers.Country, dbo.Orders.OrderDate, dbo.Orders.Freight, 
-                         dbo.Orders.ShipCity, dbo.Orders.ShipCountry, dbo.Employees.LastName, dbo.Employees.FirstName, dbo.[Order Details].OrderID, dbo.[Order Details].ProductID, dbo.[Order Details].UnitPrice, dbo.[Order Details].Quantity, 
-                         dbo.Products.ProductName, dbo.Products.UnitsInStock
-FROM            dbo.Customers INNER JOIN
-                         dbo.Orders ON dbo.Customers.CustomerID = dbo.Orders.CustomerID INNER JOIN
-                         dbo.[Order Details] ON dbo.Orders.OrderID = dbo.[Order Details].OrderID INNER JOIN
-                         dbo.Products ON dbo.[Order Details].ProductID = dbo.Products.ProductID INNER JOIN
-                         dbo.Employees ON dbo.Orders.EmployeeID = dbo.Employees.EmployeeID
+    SELECT
+        c.CustomerID,
+        c.CompanyName,
+        c.ContactName,
+        c.ContactTitle,
+        c.City,
+        c.Country,
+        o.OrderDate,
+        o.Freight,
+        o.ShipCity,
+        o.ShipCountry,
+        e.LastName,
+        e.FirstName,
+        od.OrderID,
+        od.ProductID,
+        od.UnitPrice,
+        od.Quantity,
+        p.ProductName,
+        p.UnitsInStock
+    FROM dbo.Customers AS c
+    INNER JOIN dbo.Orders AS o
+        ON c.CustomerID = o.CustomerID
+    INNER JOIN dbo.[Order Details] AS od
+        ON o.OrderID = od.OrderID
+    INNER JOIN dbo.Products AS p
+        ON od.ProductID = p.ProductID
+    INNER JOIN dbo.Employees AS e
+        ON o.EmployeeID = e.EmployeeID;
 GO
-

@@ -14,7 +14,7 @@ Hinweis: Beispiele enthalten Platzhalter und setzen passende Testobjekte voraus.
 --oder in select * from sys.dm_exec_cached_plans (sp�ter)
 
 
-//*
+/*
 Es ist nicht dazu gedacht, eine Indizierungskonfiguration zu optimieren.
 Es kann keine statistischen Informationen zu mehr als 500 fehlenden Indexgruppen sammeln.
 Es gibt keine Reihenfolge f�r in einem Index zu verwendende Spalten an.
@@ -33,7 +33,7 @@ Es gibt nur Rohdateninformationen zu Spalten zur�ck, bei denen m�glicherweis
 Es schl�gt keine gefilterten Indizes vor.
 Es kann unterschiedliche Kosten f�r dieselbe fehlende Indexgruppe zur�ckgeben, die mehrere Male in XML-Showplans angezeigt wird.
 
-*//
+*/
 
 
 
@@ -148,7 +148,7 @@ go
 --es geht aber auch leichter..
 ---select * from sys.dm_db_missing_index_...
 
-//*
+/*
 Felhlende INdizes werden zu Gruppen zusammengefasst..wird f�r weitere Abfragen gebraucht (Verkn�pfungen)
 select * from sys.dm_db_missing_index_groups
 
@@ -170,7 +170,7 @@ Gibt gleiche Details aus wie index_details
 select * from sys.dm_db_missing_index_columns
 
 
-*//
+*/
 
 
 
@@ -190,4 +190,3 @@ select db_name(d.database_id) as db_name
        inner join sys.dm_db_missing_index_details as d
                on g.index_handle = d.index_handle
  where d.database_id > 4  -- Nur Benutzerdatenbanken
-

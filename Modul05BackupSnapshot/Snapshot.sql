@@ -9,42 +9,49 @@ Hinweis: Vor dem Ausfuehren logische Dateinamen, Dateipfade und aktive
 Verbindungen pruefen. RESTORE aus Snapshot verwirft spaetere Aenderungen.
 */
 
-USE [master]
-GO
-ALTER DATABASE northwind SET  Multi_USER WITH NO_WAIT
+USE [master];
 GO
 
+ALTER DATABASE [Northwind]
+    SET MULTI_USER WITH NO_WAIT;
 GO
-
 
 -- =============================================
 -- Create Database Snapshot Template
 -- =============================================
-USE master
+USE [master];
 GO
-
 
 -- Create the database snapshot
-CREATE DATABASE SnapshotDBName ON
-( NAME = logNamederOrgDatendatei, 
-FILENAME = 'PfadundDateiname der Snapshotdatendatei.mdf')
-AS SNAPSHOT OF OrgDb;
-GO
-
-create database  nw_1616
+CREATE DATABASE [SnapshotDBName]
 ON
 (
-	NAME=Northwind, --alte mdf
-	FILENAME='c:\_SQLDATA\nw_1616 .mdf'  --StdPfad des SQL Server
-)   as snapshot of northwind
-
-
-use northwind;
+    NAME = [logNamederOrgDatendatei],
+    FILENAME = N'PfadundDateiname der Snapshotdatendatei.mdf'
+)
+AS SNAPSHOT OF [OrgDb];
 GO
 
-update customers set city = 'XXX' where customerid = 'ALFKI'
+CREATE DATABASE [nw_1616]
+ON
+(
+    NAME = N'Northwind', -- Logischer Name der Datendatei.
+    FILENAME = N'C:\_SQLDATA\nw_1616.mdf' -- Beispielpfad anpassen.
+)
+AS SNAPSHOT OF [Northwind];
+GO
 
-select * from customers
+USE [Northwind];
+GO
+
+UPDATE dbo.Customers
+SET City = N'XXX'
+WHERE CustomerID = N'ALFKI';
+GO
+
+SELECT *
+FROM dbo.Customers;
+GO
 
 
 --Snapshot-----------------TSQL
@@ -58,9 +65,11 @@ select * from customers
 --Kann man die OrgDB backupen?
 --Ja klar
 
-select * from Northwind..customers
-except
-select * from [SN_nwind_1220]..customers
+SELECT *
+FROM [Northwind].dbo.Customers
+EXCEPT
+SELECT *
+FROM [nw_1616].dbo.Customers;
 
 
 --kann man den SN restoren?
@@ -72,30 +81,33 @@ select * from [SN_nwind_1220]..customers
 --Restore von SN m�glich
 
 --alle user m�ssen von allen DBs (northwind und Snapshot) verscheucht werden
-use master;
+USE [master];
 GO
 
 --der Restore geht nur, wenn alle Connections beendet wurden
 
-restore database northwind
-from database_snapshot ='nw_1616'
+RESTORE DATABASE [Northwind]
+FROM DATABASE_SNAPSHOT = N'nw_1616';
+GO
 
 
-select * from sysprocesses where spid > 50 and dbid in(11,5)
+SELECT *
+FROM sys.sysprocesses
+WHERE spid > 50
+  AND dbid IN (DB_ID(N'Northwind'), DB_ID(N'nw_1616'));
 
-select db_id('nw_1400')
+SELECT DB_ID(N'nw_1616');
 
-kill 56
+-- KILL <SPID>; -- Nur nach Pruefung der Sitzung und des Datenbankkontexts ausfuehren.
 
 
 --oder so 
 
 --alle laufenden Prozesse der Benutzer
-select * from sysprocesses 
-	where 
-			spid > 50 AND
-			dbid in (db_id('northwind'), db_id('SN_nwind_1220'))
+SELECT *
+FROM sys.sysprocesses
+WHERE spid > 50
+  AND dbid IN (DB_ID(N'Northwind'), DB_ID(N'nw_1616'));
 
 
-kill 81
-
+-- KILL <SPID>; -- Nur nach Pruefung der Sitzung und des Datenbankkontexts ausfuehren.

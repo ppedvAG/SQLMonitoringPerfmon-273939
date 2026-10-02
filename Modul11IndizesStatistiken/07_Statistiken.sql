@@ -8,6 +8,7 @@ FULLSCAN kann bei grossen Tabellen erheblichen Aufwand verursachen.
 Hinweis: Einige Beispiele setzen dbo.Kunden sowie geeignete Berechtigungen voraus.
 */
 
+/*
 Wofür Statistiken?
 SQL Server muss bevor die Abfragen ausgeführt werden eine Information besitzten,
 wieviele DAtensätze in etwa zurückkommen werden. Das ist wichtig für die Wahl 
@@ -191,6 +192,8 @@ Bei unbekannten Werten: Dichte oder Defaultschätzung.
 Mehrspaltenstatistiken reduzieren Fehlabschätzungen bei Korrelationen.
 
 	----------------------------------------------
+*/
+
  --Tabelle erstellen
 DROP TABLE IF EXISTS dbo.Kunden;
 CREATE TABLE dbo.Kunden
@@ -221,7 +224,7 @@ WHERE Nachname = 'A...';
 ---  Histogramm
 DBCC SHOW_STATISTICS ('dbo.Kunden', '_WA_Sys_00000002_01142BA1');
 
-
+/*
 Name                          Updated              Rows    Rows Sampled    Steps    Density   ...
 ----------------------------  ------------------  ------  -------------  ------  ---------  
 _WA_Sys_00000002_1234ABCD      Aug 13 2025 16:30   10000   10000           200      0.0025
@@ -243,17 +246,18 @@ C...          60           100       55                    1.09
 RANGE_ROWS = Werte zwischen Buckets
 DENSITY = 1 / Anzahl unterschiedlicher Werte
 
+ */
 
  --UPDATE BIS 2014
-Änderungen > 500 + (0.20 * n)
+ /*
+ Änderungen > 500 + (0.20 * n)
 
 
 --UPDATE AB 2016    (Traceflag 2371 )
 Änderungen > 500 * (n / 250000) ^ 0.5
 ==> Kleine Tabellen → fast wie alte Regel
 Große Tabellen → Schwelle << 20 %
-
-
+*/
 
 --Manuell:
 -- Standard (Sampling)
@@ -268,7 +272,7 @@ UPDATE STATISTICS dbo.Kunden _WA_Sys_00000002_1234ABCD WITH FULLSCAN;
 -- Alle Statistiken in der Datenbank
 EXEC sp_updatestats;
 
-
+/*
 
 4. Übersichtstabelle: Verhalten nach SQL-Version
 SQL-Version	Auto Update Trigger	Besonderheiten
@@ -278,9 +282,11 @@ SQL Server 2016 SP1+	Dynamisch (Standard)	CE v2 Standard, Inkrementelle Stats
 SQL Server 2017+	Dynamisch (Standard)	Async Auto Update Stats stabil
 SQL Server 2019+	Dynamisch (Standard)	Adaptive Query Processing (IQP)
 SQL Server 2022	Dynamisch (Standard)	Verbesserte CE, IQP-Features
+*/
 
 
 --Wie wird gesucht?
+/*
 Exakter Treffer im Histogramm
 Selectivity = EQ_ROWS / Total_Rows
 
@@ -295,6 +301,7 @@ Estimated_Rows = Total_Rows * Density(col1) * Density(col2)
 
 
 
+*/
 --BSP
 /* 1) Testtabelle neu anlegen */
 DROP TABLE IF EXISTS dbo.Kunden;
@@ -392,6 +399,3 @@ Histogramm: Zeigt konkrete Häufigkeiten einzelner Werte oder Wertbereiche.
 EQ_ROWS: Exakte Treffer für Schlüsselwerte.
 
 RANGE_ROWS: Werte zwischen bekannten Schlüsseln → SQL Server interpoliert.
-
-
-

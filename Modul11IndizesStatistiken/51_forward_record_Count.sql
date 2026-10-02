@@ -8,35 +8,24 @@ und eine Heap-Umwandlung nur nach Abwaegung der Folgen erwägen.
 Hinweis: DBCC SHOWCONTIG ist veraltet; die DMV benoetigt geeignete Rechte.
 */
 
---Design Ph�nomene
+-- Beispiel: Vorwaertsverweise in einem Heap nach Zeilenveraenderungen untersuchen.
 
---forward Record Counts
---kommt durch Hinzuf�gen von Spalten zu bestehenden Tabellen
---14000 Seiten mehr als Tabelle hat???
-
---Alter  !!
-
---Table Scan 56000
-
-dbcc showcontig('ku')--42186
+DBCC SHOWCONTIG ('ku'); -- 42186.
 
 
---der dbcc ist veraltet.. hier hilft der Befehl 
+-- DBCC SHOWCONTIG ist veraltet; die DMV liefert die aktuellen Indexmetriken.
 
-select * from sys.dm_db_index_physical_stats
-		(db_id(), object_id('ku'),null,null,'detailed')
+SELECT *
+FROM sys.dm_db_index_physical_stats
+(
+    DB_ID(),
+    OBJECT_ID('ku'),
+    NULL,
+    NULL,
+    'DETAILED'
+);
 
---forwarded_record_count immer NUll oder 0 sein
-
--- der forwardRecordCount sollte immer NULL oder 0 sein
-
--- im Falle von Clustered Indizes wird es immer NULL sein
-
---sond forwardrecordcounts vorhanden--> CL IX erstellen
---und falls der nicht erw�nscht ist wieder l�schen
-:-)
-
---TRIGGER: INS UP DEL   DML
-
---DDL: CR ALTER DROP
-
+-- Ein niedriger Wert ist wuenschenswert; Clustered Indexes haben keine
+-- forwarded records, da die Zeilenposition ueber den Index bestimmt wird.
+-- Vor dem Erstellen eines Clustered Indexes die Auswirkungen auf Schema,
+-- Speicherbedarf und Workload abwaegen.
