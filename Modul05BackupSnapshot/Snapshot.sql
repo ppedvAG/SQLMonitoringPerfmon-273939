@@ -1,93 +1,92 @@
 /*
 Zweck: Erstellen und Wiederherstellen eines Datenbank-Snapshots.
-Das Skript enthaelt eine Vorlage und ein Northwind-Beispiel. Ersetze logische Dateinamen und Dateipfade durch passende Werte; Snapshots benoetigen ausreichend Speicher und sind kein Ersatz fuer unabhaengige Sicherungen.
+Das Skript enthaelt eine Vorlage und ein Northwind-Beispiel. Ersetze logische Dateinamen und Dateipfade durch passende Werte; Snapshots benoetigen ausreichend Speicher und sind kein Ersatz fuer unabhaengige Sicherungen. Die Beispiele aendern Daten und koennen die Datenbank wiederherstellen; beende dafuer vorher alle Verbindungen. Fuehre sie nur in einer Testumgebung aus.
 */
 USE [master]
 GO
-ALTER DATABASE northwind SET  Multi_USER WITH NO_WAIT
+ALTER DATABASE [Northwind]
+   SET MULTI_USER WITH NO_WAIT;
 GO
-
-GO
-
 
 -- =============================================
 -- Create Database Snapshot Template
 -- =============================================
-USE master
+USE [master]
 GO
 
-
--- Create the database snapshot
-CREATE DATABASE SnapshotDBName ON
-( NAME = logNamederOrgDatendatei, 
-FILENAME = 'PfadundDateiname der Snapshotdatendatei.mdf')
-AS SNAPSHOT OF OrgDb;
+-- Vorlage: Namen, logischen Dateinamen und Pfad an die Quelldatenbank anpassen.
+CREATE DATABASE [SnapshotDBName]
+   ON
+   (
+       NAME = [logNamederOrgDatendatei],
+       FILENAME = N'PfadundDateiname der Snapshotdatendatei.mdf'
+   )
+   AS SNAPSHOT OF [OrgDb];
 GO
 
-create database  nw_1616
-ON
+-- Snapshot der Northwind-Beispieldatenbank erstellen.
+CREATE DATABASE [nw_1616]
+   ON
 (
-	NAME=Northwind, --alte mdf
-	FILENAME='c:\_SQLDATA\nw_1616 .mdf'  --StdPfad des SQL Server
-)   as snapshot of northwind
-
-
-use northwind;
+   NAME = N'Northwind', -- Logischer Name der Quelldatendatei.
+   FILENAME = N'C:\_SQLDATA\nw_1616.mdf' -- Speicherort der Snapshot-Datei.
+)
+AS SNAPSHOT OF [Northwind];
 GO
 
-update customers set city = 'XXX' where customerid = 'ALFKI'
-
-select * from customers
-
-
---Snapshot-----------------TSQL
-
---Kann man mehrere SN machen?
---ja
-
---Kann man einen SN backupen?
---Nö
-
---Kann man die OrgDB backupen?
---Ja klar
-
-select * from Northwind..customers
-except
-select * from [SN_nwind_1220]..customers
-
-
---kann man den SN restoren?
---nö
-
---kann man die OrgDB restoren?
---jein--kein normaler restore
---für den normal restore müssen alle SN gelöscht werden
---Restore von SN möglich
-
---alle user müssen von allen DBs (northwind und Snapshot) verscheucht werden
-use master;
+USE [Northwind];
 GO
 
---der Restore geht nur, wenn alle Connections beendet wurden
+-- Beispielaenderung: Die Snapshot-Kopie behaelt den vorherigen Datenstand.
+UPDATE dbo.Customers
+SET City = N'XXX'
+WHERE CustomerID = N'ALFKI';
 
-restore database northwind
-from database_snapshot ='nw_1616'
-
-
-select * from sysprocesses where spid > 50 and dbid in(11,5)
-
-select db_id('nw_1400')
-
-kill 56
+SELECT *
+FROM dbo.Customers;
 
 
---oder so 
+-- Weitere Snapshot-Abfragen und Restore-Beispiele.
 
---alle laufenden Prozesse der Benutzer
-select * from sysprocesses 
-	where 
-			spid > 50 AND
-			dbid in (db_id('northwind'), db_id('SN_nwind_1220'))
+-- Fuer eine Datenbank koennen mehrere Snapshots erstellt werden.
+
+-- Ein Datenbank-Snapshot kann nicht wie eine regulaere Datenbank gesichert werden.
+
+-- Die Quelldatenbank kann weiterhin regulaer gesichert werden.
+
+-- Zeigt Zeilen, die sich zwischen Quelldatenbank und Snapshot unterscheiden.
+SELECT *
+FROM Northwind.dbo.Customers
+EXCEPT
+SELECT *
+FROM [nw_1616].dbo.Customers;
 
 
-kill 81
+-- Ein Snapshot wird nicht mit dem regulaeren RESTORE-Befehl wiederhergestellt.
+
+-- Die Quelldatenbank kann auf den Snapshot-Stand zurueckgesetzt werden.
+-- Vor einem regulaeren Restore muessen die Snapshots geloescht werden.
+
+-- Vor dem Zuruecksetzen muessen Verbindungen zur Quelldatenbank beendet sein.
+USE [master];
+GO
+
+-- Beispiel zum Ermitteln der Sitzungen, die vor dem Restore zu beenden sind.
+SELECT *
+FROM sysprocesses
+WHERE spid > 50
+  AND dbid IN (DB_ID(N'Northwind'), DB_ID(N'nw_1616'));
+
+-- Alternativ nur Sitzungen der Quelldatenbank und des Snapshots anzeigen.
+SELECT *
+FROM sysprocesses
+WHERE spid > 50
+  AND dbid IN (DB_ID(N'Northwind'), DB_ID(N'nw_1616'));
+
+-- Beende Sitzungen nur nach Pruefung ihrer Zugehoerigkeit und Auswirkungen:
+-- KILL <Sitzungs-ID>;
+
+-- Setzt Northwind auf den Snapshot-Stand zurueck; alle Verbindungen muessen
+-- vorher beendet sein. Fuehre dies nur aus, wenn das Zuruecksetzen beabsichtigt ist.
+RESTORE DATABASE [Northwind]
+FROM DATABASE_SNAPSHOT = [nw_1616];

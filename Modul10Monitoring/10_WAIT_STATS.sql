@@ -2,15 +2,20 @@
 Zweck: Auswertung kumulierter SQL-Server-Wartestatistiken.
 Die Abfrage berechnet Wartezeit, Ressourcenauslastung, Signalwartezeit und prozentuale Anteile und blendet zahlreiche Hintergrund-Wait-Types aus. DMV-Werte gelten seit dem letzten Zuruecksetzen oder Neustart und muessen im Kontext interpretiert werden.
 */
-WITH [Waits] 
-AS (SELECT wait_type, wait_time_ms/ 1000.0 AS [WaitS],
-          (wait_time_ms - signal_wait_time_ms) / 1000.0 AS [ResourceS],
-           signal_wait_time_ms / 1000.0 AS [SignalS],
-           waiting_tasks_count AS [WaitCount],
-           100.0 *  wait_time_ms / SUM (wait_time_ms) OVER() AS [Percentage],
-           ROW_NUMBER() OVER(ORDER BY wait_time_ms DESC) AS [RowNum]
+-- Berechnet Anteile und durchschnittliche Wartezeiten fuer relevante Wait-Types.
+;WITH [Waits] AS
+(
+    SELECT
+        wait_type,
+        wait_time_ms / 1000.0 AS [WaitS],
+        (wait_time_ms - signal_wait_time_ms) / 1000.0 AS [ResourceS],
+        signal_wait_time_ms / 1000.0 AS [SignalS],
+        waiting_tasks_count AS [WaitCount],
+        100.0 * wait_time_ms / SUM(wait_time_ms) OVER () AS [Percentage],
+        ROW_NUMBER() OVER (ORDER BY wait_time_ms DESC) AS [RowNum]
     FROM sys.dm_os_wait_stats WITH (NOLOCK)
-    WHERE [wait_type] NOT IN (
+    WHERE [wait_type] NOT IN
+    (
         N'BROKER_EVENTHANDLER', N'BROKER_RECEIVE_WAITFOR', N'BROKER_TASK_STOP',
         N'BROKER_TO_FLUSH', N'BROKER_TRANSMITTER', N'CHECKPOINT_QUEUE',
         N'CHKPT', N'CLR_AUTO_EVENT', N'CLR_MANUAL_EVENT', N'CLR_SEMAPHORE',
@@ -42,22 +47,25 @@ AS (SELECT wait_type, wait_time_ms/ 1000.0 AS [WaitS],
         N'WAIT_FOR_RESULTS', N'WAITFOR', N'WAITFOR_TASKSHUTDOWN', N'WAIT_XTP_HOST_WAIT',
         N'WAIT_XTP_OFFLINE_CKPT_NEW_LOG', N'WAIT_XTP_CKPT_CLOSE', N'WAIT_XTP_RECOVERY',
         N'XE_BUFFERMGR_ALLPROCESSED_EVENT', N'XE_DISPATCHER_JOIN',
-        N'XE_DISPATCHER_WAIT', N'XE_LIVE_TARGET_TVF', N'XE_TIMER_EVENT')
-    AND waiting_tasks_count > 0)
+        N'XE_DISPATCHER_WAIT', N'XE_LIVE_TARGET_TVF', N'XE_TIMER_EVENT'
+    )
+        AND waiting_tasks_count > 0
+)
+-- Begrenze die Ausgabe auf die Wait-Types, die zusammen fast alle Wartezeit erklaeren.
 SELECT
-    MAX (W1.wait_type) AS [WaitType],
-    CAST (MAX (W1.Percentage) AS DECIMAL (5,2)) AS [Wait Percentage],
-    CAST ((MAX (W1.WaitS) / MAX (W1.WaitCount)) AS DECIMAL (16,4)) AS [AvgWait_Sec],
-    CAST ((MAX (W1.ResourceS) / MAX (W1.WaitCount)) AS DECIMAL (16,4)) AS [AvgRes_Sec],
-    CAST ((MAX (W1.SignalS) / MAX (W1.WaitCount)) AS DECIMAL (16,4)) AS [AvgSig_Sec], 
-    CAST (MAX (W1.WaitS) AS DECIMAL (16,2)) AS [Wait_Sec],
-    CAST (MAX (W1.ResourceS) AS DECIMAL (16,2)) AS [Resource_Sec],
-    CAST (MAX (W1.SignalS) AS DECIMAL (16,2)) AS [Signal_Sec],
+    MAX(W1.wait_type) AS [WaitType],
+    CAST(MAX(W1.Percentage) AS DECIMAL(5, 2)) AS [Wait Percentage],
+    CAST(MAX(W1.WaitS) / MAX(W1.WaitCount) AS DECIMAL(16, 4)) AS [AvgWait_Sec],
+    CAST(MAX(W1.ResourceS) / MAX(W1.WaitCount) AS DECIMAL(16, 4)) AS [AvgRes_Sec],
+    CAST(MAX(W1.SignalS) / MAX(W1.WaitCount) AS DECIMAL(16, 4)) AS [AvgSig_Sec],
+    CAST(MAX(W1.WaitS) AS DECIMAL(16, 2)) AS [Wait_Sec],
+    CAST(MAX(W1.ResourceS) AS DECIMAL(16, 2)) AS [Resource_Sec],
+    CAST(MAX(W1.SignalS) AS DECIMAL(16, 2)) AS [Signal_Sec],
     MAX (W1.WaitCount) AS [Wait Count],
-    CAST (N'https://www.sqlskills.com/help/waits/' + W1.wait_type AS XML) AS [Help/Info URL]
+    CAST(N'https://www.sqlskills.com/help/waits/' + W1.wait_type AS XML) AS [Help/Info URL]
 FROM Waits AS W1
 INNER JOIN Waits AS W2
-ON W2.RowNum <= W1.RowNum
+    ON W2.RowNum <= W1.RowNum
 GROUP BY W1.RowNum, W1.wait_type
-HAVING SUM (W2.Percentage) - MAX (W1.Percentage) < 99 -- percentage threshold
+HAVING SUM(W2.Percentage) - MAX(W1.Percentage) < 99 -- Prozentgrenze der kumulierten Wait-Zeit.
 OPTION (RECOMPILE);
