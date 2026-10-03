@@ -1,4 +1,8 @@
 /*
+Zweck: Vergleich von Ad-hoc-Abfragen, Sichten, gespeicherten Prozeduren und Funktionen.
+Die Notizen betrachten Planwiederverwendung und moegliche Laufzeitunterschiede. Sie vermitteln, dass die Leistung vom konkreten Abfrageplan und den Randbedingungen abhaengt; mehrere Abschnitte sind Lernnotizen statt ausfuehrbarer T-SQL-Bloecke.
+*/
+/*
 Daten abfragen
 
 a) select * from tabelle join ..join..join

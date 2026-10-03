@@ -1,3 +1,7 @@
+/*
+Zweck: Vergleich gaengiger Werkzeuge zur SQL-Server-Performanceanalyse.
+Der Text beschreibt Einsatz, Vorteile und Grenzen von Aktivitaetsmonitor, DMVs und weiteren Diagnosewerkzeugen. Er ist eine Orientierungshilfe und enthaelt kein vollstaendiges T-SQL-Skript.
+*/
 1. Aktivitätsmonitor
 Wann einsetzen:
 Schnelle Ad-hoc-Diagnose, wenn z. B. eine Anwendung „hängt“ oder plötzliche Performanceprobleme auftreten.

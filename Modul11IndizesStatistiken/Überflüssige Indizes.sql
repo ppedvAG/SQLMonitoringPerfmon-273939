@@ -1,3 +1,7 @@
+/*
+Zweck: Identifikation moeglicherweise ungenutzter oder ueberfluessiger Indizes.
+Die Notizen verweisen auf Nutzungssichten und erklaeren moegliche Kosten fuer Schreibvorgaenge. DMV-Nutzungszaehler werden bei Neustarts oder bestimmten Wartungsereignissen zurueckgesetzt; entferne Indizes daher nicht allein aufgrund einer einzelnen Momentaufnahme.
+*/
 --Überflüssige Indizes identifizieren
 
 --kosten Performance bei INSERT / DELETE
