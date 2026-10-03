@@ -1,4 +1,8 @@
 ﻿/*
+Purpose: Install Ola Hallengren's SQL Server Maintenance Solution.
+This upstream script creates maintenance procedures and, when enabled below, SQL Agent jobs for backups, integrity checks, and index/statistics maintenance. Review its configuration values, permissions, destinations, and license before running it on a server.
+*/
+/*
 
 SQL Server Maintenance Solution - SQL Server 2008, SQL Server 2008 R2, SQL Server 2012, SQL Server 2014, SQL Server 2016, SQL Server 2017, SQL Server 2019, SQL Server 2022, and SQL Server 2025
 

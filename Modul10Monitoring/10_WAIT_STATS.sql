@@ -1,3 +1,7 @@
+/*
+Zweck: Auswertung kumulierter SQL-Server-Wartestatistiken.
+Die Abfrage berechnet Wartezeit, Ressourcenauslastung, Signalwartezeit und prozentuale Anteile und blendet zahlreiche Hintergrund-Wait-Types aus. DMV-Werte gelten seit dem letzten Zuruecksetzen oder Neustart und muessen im Kontext interpretiert werden.
+*/
 WITH [Waits] 
 AS (SELECT wait_type, wait_time_ms/ 1000.0 AS [WaitS],
           (wait_time_ms - signal_wait_time_ms) / 1000.0 AS [ResourceS],

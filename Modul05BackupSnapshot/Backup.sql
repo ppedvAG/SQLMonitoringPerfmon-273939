@@ -1,4 +1,8 @@
 /*
+Zweck: Grundlagen und Beispiele zu Wiederherstellungsmodellen, Sicherungen und Restore.
+Die Notizen vergleichen vollstaendige, differenzielle und Transaktionsprotokollsicherungen und skizzieren typische Wiederherstellungsfaelle. Die Beispiele verwenden Northwind und lokale Pfade; passe sie an eine gepruefte Sicherungsstrategie an und teste Wiederherstellungen regelmaessig.
+*/
+/*
 
 Wiederherstellungsmodel oder RecoveyModel
 

@@ -1,3 +1,7 @@
+/*
+Zweck: Erlaueterung der Momentaufnahmeisolation und zeilenversionierter Lesezugriffe.
+Die Notizen behandeln Sperren, READ UNCOMMITTED, Snapshot Isolation und moegliche Belastung von tempdb. Die enthaltenen Datenbankoptionen aendern das Laufzeitverhalten und muessen vor dem Einsatz mit Anwendungen und Speicherbedarf abgestimmt werden.
+*/
 --Standardm‰ﬂg werden bei Transactions der reihe nach Datens‰tze Tabellen Seiten Partitionen gesperrt
 --Das Sperrniveau ist sehr starlk von der IX Qualit‰t abh‰ngig. Wie finde ich den DS?
 --SQL hebt allerdings das SPerrniveau, wenn viele Einzelsperren zu teuer werden

@@ -1,3 +1,7 @@
+/*
+Zweck: Hinweise zur Interpretation fehlender Indexempfehlungen.
+Die Notizen und Abfragen zeigen DMV-basierte Vorschlaege und deren Grenzen. Empfehlungen sind keine fertige Indexkonfiguration; pruefe Nutzung, Schreibkosten, vorhandene Indizes und reale Ausfuehrungsplaene vor Aenderungen.
+*/
 
 --Fehlende indizes feststellen
 -- Ausgabe in tatsächlichen Ausführungsplan

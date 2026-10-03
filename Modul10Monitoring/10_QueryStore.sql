@@ -1,3 +1,7 @@
+/*
+Zweck: Beschreibung der Funktionen des Query Stores.
+Der Text erlaeutert die Speicherung von Abfrageplaenen und Laufzeitstatistiken, die Analyse von Planregressionen und das Erzwingen eines Plans. Es handelt sich um Dokumentation, nicht um ausfuehrbares T-SQL.
+*/
 Funktionen des Query Stores:
 Verfolgen von Abfrageleistung im Zeitverlauf:
 

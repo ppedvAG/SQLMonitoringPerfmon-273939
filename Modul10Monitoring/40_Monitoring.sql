@@ -1,3 +1,7 @@
+/*
+Zweck: Einstieg in die Diagnose aktueller SQL-Server-Performanceprobleme.
+Die Notizen ordnen Betriebssystem- und SQL-Server-Beobachtungen ein und enthalten Beispiele fuer Warte- und Sitzungsinformationen. Kumulative DMV-Werte sowie Systemlast muessen zusammen mit dem Zeitraum des Problems bewertet werden.
+*/
 --Überwachung
 
 /*

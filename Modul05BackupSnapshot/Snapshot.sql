@@ -1,3 +1,7 @@
+/*
+Zweck: Erstellen und Wiederherstellen eines Datenbank-Snapshots.
+Das Skript enthaelt eine Vorlage und ein Northwind-Beispiel. Ersetze logische Dateinamen und Dateipfade durch passende Werte; Snapshots benoetigen ausreichend Speicher und sind kein Ersatz fuer unabhaengige Sicherungen.
+*/
 USE [master]
 GO
 ALTER DATABASE northwind SET  Multi_USER WITH NO_WAIT

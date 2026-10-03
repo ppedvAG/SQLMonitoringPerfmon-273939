@@ -1,4 +1,8 @@
 /*
+Zweck: Hinweise zum Betrieb von SQL Server in virtuellen Maschinen.
+Die Notizen behandeln Ressourcenplanung, I/O-Leistung, getrennte Daten- und Protokolldateien sowie NUMA. Sie dienen als Diskussionsgrundlage und ersetzen keine Messung der konkreten virtuellen Umgebung.
+*/
+/*
 Fragen , die man sich stellen sollte:
 
 Hat die VM auch die Ressourcen

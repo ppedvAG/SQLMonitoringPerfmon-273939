@@ -1,3 +1,7 @@
+/*
+Zweck: Anlegen von Dateigruppen und Datendateien fuer eine Beispieldatenbank.
+Die T-SQL-Anweisungen legen die Dateigruppen HOT und ARCHIV sowie zugehoerige Dateien in der Datenbank Monitoring an. Passe Datenbanknamen und Dateipfade an und stelle sicher, dass die Verzeichnisse fuer den SQL-Server-Dienst erreichbar sind.
+*/
 --Dateigruppen
 USE [master]
 GO

@@ -1,4 +1,8 @@
 /*
+Zweck: Grundlagen zum Entwurf und zur Nutzung von SQL-Server-Indizes.
+Die Notizen vergleichen gruppierte und nicht gruppierte Indizes und behandeln Schluessel, Include-Spalten und weitere Entwurfsaspekte. Indexbeispiele sind konzeptionell; pruefe Speicher- und Schreibkosten sowie reale Ausfuehrungsplaene.
+*/
+/*
 
 INDIZES
 

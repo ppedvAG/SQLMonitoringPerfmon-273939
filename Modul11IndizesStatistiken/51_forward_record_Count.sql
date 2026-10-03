@@ -1,3 +1,7 @@
+/*
+Zweck: Untersuchung weitergeleiteter Datensaetze in Heaptabellen.
+Die Beispiele verwenden sys.dm_db_index_physical_stats und erwaehnen DBCC SHOWCONTIG als veraltete Alternative. Die DMV kann je nach Modus I/O verursachen; waehle Umfang und Detailgrad passend zur Datenbankgroesse.
+*/
 --Design Phänomene
 
 --forward Record Counts

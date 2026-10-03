@@ -1,3 +1,7 @@
+/*
+Zweck: Einordnung ausgewaehlter Performance-Monitor-Zaehler fuer SQL Server.
+Die Notizen behandeln Prozessorzeit, Datentraegerwarteschlange, Speicherseiten und Buffer-Cache-Trefferquote. Genannte Richtwerte sind grobe Anhaltspunkte und muessen anhand von Baselines, Workload und Messzeitraum bewertet werden.
+*/
 
 andreasr@ppedv.de
 

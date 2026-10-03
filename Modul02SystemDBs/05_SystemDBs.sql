@@ -1,4 +1,8 @@
 /*
+Zweck: Ueberblick ueber die SQL-Server-Systemdatenbanken.
+Die Notizen beschreiben Aufgaben und Sicherungsbedarf von master, model, msdb und tempdb sowie die Folgen von Aenderungen an model. Sie sind Lernmaterial und enthalten kein vollstaendiges Administrationsskript.
+*/
+/*
 
 master
 "herz"

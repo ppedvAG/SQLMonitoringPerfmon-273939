@@ -1,3 +1,7 @@
+/*
+Zweck: Beispielsicht fuer Auswertungen zu Kundenumsatz.
+Die Sicht verbindet Kunden, Bestellungen, Bestellpositionen, Produkte und Mitarbeiter und stellt ausgewaehlte Spalten fuer Abfragen bereit. Sie setzt die Northwind-Tabellen im Schema dbo voraus und dient als Kursbeispiel.
+*/
 CREATE VIEW [dbo].[KundenUmsatz]
 AS
 SELECT        dbo.Customers.CustomerID, dbo.Customers.CompanyName, dbo.Customers.ContactName, dbo.Customers.ContactTitle, dbo.Customers.City, dbo.Customers.Country, dbo.Orders.OrderDate, dbo.Orders.Freight, 

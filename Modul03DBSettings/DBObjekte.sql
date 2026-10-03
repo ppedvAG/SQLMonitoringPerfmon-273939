@@ -1,3 +1,7 @@
+/*
+Zweck: Vergleich verschiedener Datenbankobjekte fuer dieselbe Abfrage.
+Die Notizen behandeln Sichten, Prozeduren, Funktionen und Ad-hoc-SQL sowie Kompilierung, Planwiederverwendung und moegliche Messungen. Die Beispiele sind Lernmaterial und muessen fuer eine konkrete Datenbank vervollstaendigt werden.
+*/
 						  /*
 wir können mit Hilfe veschiedener Objekte diesseleben Ergennisse bekommen
 Aber was ist schneller: F() , Porz , Adhoc oder Sicht

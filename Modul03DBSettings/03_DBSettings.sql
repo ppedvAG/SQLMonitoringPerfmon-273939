@@ -1,3 +1,7 @@
+/*
+Zweck: Beispiele fuer Datenbankoptionen und Statistikeinstellungen.
+Das Skript zeigt Einstellungen fuer inkrementelle automatische Statistiken und DATE_CORRELATION_OPTIMIZATION und erlaeutert deren moeglichen Einfluss auf Abfrageplaene. Die Beispiele verwenden Northwind und sollten an die jeweilige Datenbank angepasst werden.
+*/
 use [master];
 GO
 

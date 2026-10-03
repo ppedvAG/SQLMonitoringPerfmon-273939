@@ -1,3 +1,7 @@
+/*
+Zweck: Hinweise zu Groesse, Wachstum und Einstellungen einer Datenbank.
+Die Notizen erlaeutern Startgroesse, automatische Dateivergroesserung, Wiederherstellungsmodelle und Statistiken. Die Beispiele sind konzeptionell; Werte und Optionen muessen anhand der Anforderungen und Sicherungsstrategie festgelegt werden.
+*/
 	   /*
 
 Eine Datenbank beginnt mit rel geringen Größen

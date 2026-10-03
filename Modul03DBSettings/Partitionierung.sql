@@ -1,4 +1,8 @@
 /*
+Zweck: Demonstration partitionierter Sichten und nativer Tabellenpartitionierung.
+Das Skript zeigt Check-Constraints, Partition Functions und Schemes, das Erweitern und Zusammenfuehren von Grenzen, Komprimierung und SWITCH zum Archivieren. Es legt Objekte an und enthaelt datenbank- und dateigruppenspezifische Beispiele; fuehre es nur in einer vorbereiteten Testdatenbank aus.
+*/
+/*
 1.  Problem: größer werdende Tabellen
 
 Idee: Salamitaktiv.. statt einer großen Tabelle viele kleine

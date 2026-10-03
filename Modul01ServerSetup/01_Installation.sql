@@ -1,4 +1,8 @@
 /*
+Zweck: Leitfaden zur Planung einer SQL-Server-Installation.
+Die Notizen behandeln Ressourcen, Authentifizierung, Dienstkonten, Firewall, Daten- und Sicherungspfade sowie TempDB. Die Datei enthaelt zusaetzlich kleine Northwind-Abfragen zur Soundex-Funktion; die uebrigen Abschnitte sind Hinweise und keine vollstaendige Installationsanleitung.
+*/
+/*
 
 
 

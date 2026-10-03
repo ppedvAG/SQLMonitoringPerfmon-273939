@@ -1,4 +1,8 @@
 /*
+Zweck: Demonstration von Parallelitaet und MAXDOP in SQL Server.
+Das Skript vergleicht Laufzeit- und I/O-Statistiken, zeigt Abfragehinweise und die datenbankbezogene MAXDOP-Konfiguration. Es verwendet Northwind-Objekte; pruefe die Auswirkungen einer Konfigurationsaenderung vor dem Einsatz auf einem produktiven Server.
+*/
+/*
 
 MAXDOP 
 

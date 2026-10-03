@@ -1,3 +1,7 @@
+/*
+Zweck: Erlaeuterung des physischen Aufbaus von Datenseiten und Extents.
+Die Notizen behandeln Seitengroesse, Zeilenbelegung, Speicherstrukturen und die Auswirkungen auf I/O. Sie sind konzeptionelles Lernmaterial und kein eigenstaendig ausfuehrbares Skript.
+*/
 ----Seiten und Blöcke
 
 --Seiten und Blöcke

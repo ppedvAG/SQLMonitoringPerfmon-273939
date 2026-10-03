@@ -1,4 +1,8 @@
-﻿Wofür Statistiken?
+﻿/*
+Zweck: Erlaeuterung von SQL-Server-Statistiken und deren Einfluss auf Plaene.
+Die Datei behandelt automatische Statistiken, Stichproben, Histogramme und mehrspaltige Statistiken und enthaelt Beispiele fuer Aktualisierungen. Die Wahl und Pflege der Statistiken sollte anhand der Datenverteilung und der tatsaechlichen Abfragen erfolgen.
+*/
+Wofür Statistiken?
 SQL Server muss bevor die Abfragen ausgeführt werden eine Information besitzten,
 wieviele DAtensätze in etwa zurückkommen werden. Das ist wichtig für die Wahl 
 von IX SEEK oder doch Table_SCAN.

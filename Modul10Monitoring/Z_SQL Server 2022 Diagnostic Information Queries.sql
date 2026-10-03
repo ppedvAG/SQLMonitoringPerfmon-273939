@@ -1,3 +1,7 @@
+/*
+Zweck: Sammlung umfassender Diagnoseabfragen fuer SQL Server 2022.
+Das Upstream-Skript von Glenn Berry prueft die Produktversion und enthaelt Instanz-, Datenbank-, Abfrage- und Sicherungsdiagnosen. Verwende die zur Serverversion passende Fassung und beachte die im Original enthaltenen Copyright- und Nutzungsbedingungen.
+*/
 
 -- SQL Server 2022 Diagnostic Information Queries
 -- Glenn Berry 

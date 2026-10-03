@@ -1,4 +1,8 @@
 /*
+Zweck: Hinweise zu SQL-Server-Dienstkonten und zur Dateivergroesserung.
+Die Notizen erlaeutern lokale und Domaenenkonten sowie die Windows-Berechtigung fuer Instant File Initialization. Es handelt sich um Konfigurationshinweise, nicht um ein ausfuehrbares Setup-Skript.
+*/
+/*
 Dienstkonten
 NT Service = Lokale sich selbstverwaltende Dienstkonten
 --kein Kennwort notwendig

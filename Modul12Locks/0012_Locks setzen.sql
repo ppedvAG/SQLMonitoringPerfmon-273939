@@ -1,3 +1,7 @@
+/*
+Zweck: Demonstration von Sperrhinweisen und deren Auswirkungen auf T-SQL-Abfragen.
+Die Beispiele vergleichen unter anderem ROWLOCK, TABLOCK, PAGLOCK, NOWAIT und HOLDLOCK; Aenderungen werden jeweils zurueckgerollt. Fuehre die Beispiele nur in einer geeigneten Testdatenbank aus und beachte, dass Sperrhinweise keine allgemeine Leistungsoptimierung darstellen.
+*/
 ----
 -- LOCKS
 -- UPDLOCK, TABLOCKX
